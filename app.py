@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from models import db, Fruit
+from models import db, Fruit, FruitReview, FruitUser
 from sqlalchemy.exc import IntegrityError
 from config import Config
 
@@ -100,6 +100,82 @@ def update_fruit_info(id):
     db.session.commit()
     print(f"the fruit {id} info has beed updated")
     return jsonify({"massage":f"fruit {fruit.official_name} info updated!"}),200
+
+
+@app.route('/add_review', methods=['POST'])
+def add_review():
+    data = request.form
+    fruit_id = data.get("fruit_id")
+    taste_score = data.get("taste_score",0)
+    experience_score = data.get("experience_score",0)
+    review = data.get("review")
+    
+    fruit = Fruit.query.get(fruit_id)
+    if not fruit:
+        print("no such fruit!")
+        return jsonify({"error": "No such fruit found!"}), 404
+    
+    if not ( 0 <= taste_score <= 10 and 0 <= experience_score <= 10):
+        return jsonify({"error":"the score can be only between 0-10!"}),400
+    
+    new_review = FruitReview(
+        fruit_id=fruit_id,
+        taste_score=taste_score,
+        experience_score=experience_score,
+        review=review
+    )
+
+    db.session.add(new_review)
+    db.session.commit()
+
+    return jsonify({"message":f"the review of {fruit.official_name} added!"}),201
+
+@app.route('/fruit/<int:id>/review', methods=['GET'])
+def get_fruit_review(id):
+    fruit = Fruit.query.get(id)
+    if not fruit:
+        print("no such fruit!")
+        return jsonify({"error": "No such fruit found!"}), 404
+    
+    reviews = FruitReview.query.filter_by(fruit_id=id).all() #模糊匹配
+    return jsonify({"fruit": fruit.official_name,
+                    "review":[review.to_dict() for review in reviews]}),200
+
+@app.route('/delete_review',methods=['POST'])
+def delete_review():
+    review_id = request.form.get("review_id")
+    review = FruitReview.query.get(review_id)
+    if not review:
+        print("no such review!")
+        return jsonify({"error": "No such review found!"}), 404
+    
+    db.session.delete(review)
+    db.session.commit()
+    print(f"review {review_id} deleted")
+    return jsonify({"massage":f"review {review_id} deleted"})
+
+
+
+
+
+    
+
+        
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
