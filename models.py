@@ -30,6 +30,18 @@ class Fruit(db.Model):
     users = db.relationship("FruitUser", backref="fruit", cascade="all, delete-orphan")
     videos = db.relationship("FruitVideo", backref="fruit", cascade="all, delete-orphan")
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "official_name": self.official_name,
+            "scientific_name": self.scientific_name,
+            "image_url": self.image_url,
+            "cultivar": self.cultivar,
+            "other_links": self.other_links,
+            "special_condition": self.special_condition,
+            "tried_date": self.tried_date
+        }
+
 #places table
 class Place(db.Model):
     __tablename__ = 'places'
@@ -38,12 +50,21 @@ class Place(db.Model):
     place_name = db.Column(db.String(80), nullable=False)
     country = db.Column(db.String(100), nullable=False)
 
+
+
+
 #ways_to_get table
 class WayToGet(db.Model):
     __tablename__ = 'ways_to_get'
 
     id = db.Column(db.Integer, primary_key=True)
     method = db.Column(db.String(100), unique=True, nullable=False) #to think once get the fuit must have the way to get
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "method": self.method
+        }
 
 #fruits_revirews table
 class FruitReview(db.Model):
@@ -56,6 +77,15 @@ class FruitReview(db.Model):
     review = db.Column(db.Text, nullable=True)
 
     fruit = db.relationship("Fruit", backref="fruit_reviews") #once delete the fruit, delete all follow info  
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "fruit_id": self.fruit_id,
+            "taste_score": self.taste_score,
+            "experience_score": self.experience_score,
+            "review": self.review
+        }
 
 #users table
 class User(db.Model):
