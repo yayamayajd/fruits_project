@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template
-from models import db, Fruit, FruitReview, FruitUser
+from models import db, Fruit, FruitReview, FruitUser,User,Place
 from sqlalchemy.exc import IntegrityError
 from config import Config
 
@@ -14,20 +14,10 @@ db.init_app(app)  #init DB for Flask
 def index():
     return render_template('index.html')
 
-@app.route('/fruit/<int:id>',methods=['GET'])
-def get_fruit(id):
-    fruit = Fruit.query.get(id)
-    if not fruit:
-        print("no such fruit!")
-        return jsonify({"error": "No such fruit found!"}), 404
-    
-    fruit_details = {column.name: getattr(fruit, column.name) for column in fruit.__table__.columns} #抄来的代码，动态返回object下所有字段
-    return jsonify(fruit_details)
 
+#Fruit part
 
-
-
-@app.route('/add_fruit', methods=["POST","GET"])
+@app.route('/fruits', methods=["POST","GET"])
 def add_fruit():
     if request.method == "POST":
         data = request.form
@@ -49,7 +39,18 @@ def add_fruit():
     return render_template('add_fruit.html')
 
 
-@app.route('/query_fruit',methods=["GET"])
+
+@app.route('/fruit/<int:id>',methods=['GET'])
+def show_fruit(id):
+    fruit = Fruit.query.get(id)
+    if not fruit:
+        print("no such fruit!")
+        return jsonify({"error": "No such fruit found!"}), 404
+
+    return jsonify(fruit.to_dict())
+
+
+@app.route('/fruits',methods=["GET"])
 def query_fruit():
     search_key = request.args.get("search_key")
 
@@ -61,24 +62,13 @@ def query_fruit():
         return jsonify([fruit.to_dict() for fruit in fruits])
     return render_template('search_fruit.html')
 
-@app.route('/delete_fruit',methods=['POST'])
-def delete_fruit():
-    fruit_id = request.form.get("fruit_id")
-    fruit = Fruit.query.get(fruit_id) #利用id找出水果
-    if fruit:
-        db.session.delete(fruit)
-        db.session.commit()
-        print(f"the fruit {fruit.official_name}(ID {fruit.id}) has been deleted!")
-        return jsonify({"meddege": f"fruit {fruit.official_name} deleted! "}),200
-    print("no such fruit!")
-    return jsonify({"error": "No such fruit found!"}), 404
+
 
 
 @app.route('/fruit/<int:id>',methods=['PATCH'])
 def update_fruit_info(id):
     fruit = Fruit.query.get(id)
     if not fruit:
-        print("no such fruit!")
         return jsonify({"error": "No such fruit found!"}), 404
     
     data = request.form
@@ -98,11 +88,24 @@ def update_fruit_info(id):
         fruit.other_links = data["other_links"]  
 
     db.session.commit()
-    print(f"the fruit {id} info has beed updated")
-    return jsonify({"massage":f"fruit {fruit.official_name} info updated!"}),200
+    return jsonify({"message":f"fruit {fruit.official_name} info updated!"}),200
 
 
-@app.route('/add_review', methods=['POST'])
+@app.route('/fruits/<int:id>',methods=['DELETE'])
+def delete_fruit(id):
+    fruit = Fruit.query.get(id) #利用id找出水果
+    if not fruit:
+        return jsonify({"error": "No such fruit found!"}), 404
+    
+    db.session.delete(fruit)
+    db.session.commit()
+    return jsonify({"message": f"fruit {fruit.official_name} deleted! "}),200
+    
+
+
+
+#Review part
+@app.route('/reviews', methods=['POST'])
 def add_review():
     data = request.form
     fruit_id = data.get("fruit_id")
@@ -130,8 +133,8 @@ def add_review():
 
     return jsonify({"message":f"the review of {fruit.official_name} added!"}),201
 
-@app.route('/fruit/<int:id>/review', methods=['GET'])
-def get_fruit_review(id):
+@app.route('/fruit/<int:id>/reviews', methods=['GET'])
+def show_fruit_review(id):
     fruit = Fruit.query.get(id)
     if not fruit:
         print("no such fruit!")
@@ -141,40 +144,173 @@ def get_fruit_review(id):
     return jsonify({"fruit": fruit.official_name,
                     "review":[review.to_dict() for review in reviews]}),200
 
-@app.route('/delete_review',methods=['POST'])
-def delete_review():
-    review_id = request.form.get("review_id")
-    review = FruitReview.query.get(review_id)
+
+
+#modify review
+@app.route('/reviews/<int:id>',methods=['PATCH'])
+def update_review(id):
+    review = FruitReview.query.get(id)
+    if not review:
+        print("no such review!")
+        return jsonify({"error": "No such review found!"}), 404
+    
+    data = request.form
+    if "taste_score" in data:
+        taste_score = data["taste_score"]
+
+        if not 0 <= taste_score <= 10:
+            return jsonify({"error":"the score can be only between 0-10!"}),400
+        
+        review.test_score = taste_score
+
+    if "experience_score" in data:
+       experience_score = data["experience_score"]
+       if not 0 <= experience_score <= 10:
+            return jsonify({"error":"the score can be only between 0-10!"}),400 
+       
+       review.experience_score = experience_score
+
+    if "review" in data:
+        review.review = data["review"]
+
+    db.session.commit()
+    print(f"review {id} has been updated!")
+    return jsonify({"message": f"review {id} updated!"}),200
+
+
+#delete review
+@app.route('/review/<int:id>', methods=['DELETE'])
+def delete_review(id):
+    review = FruitReview.query.get(id)
     if not review:
         print("no such review!")
         return jsonify({"error": "No such review found!"}), 404
     
     db.session.delete(review)
     db.session.commit()
-    print(f"review {review_id} deleted")
-    return jsonify({"massage":f"review {review_id} deleted"})
+    print(f"review {id} deleted")
+    return jsonify({"massage":f"review {id} deleted"})
 
 
 
+#User part
+#add user
+@app.route('/users',methods=['POST'])
+def add_user():
+    data = request.form
+    name = data.get("name")
+
+    if not name:
+        return jsonify({"error": "invalid input!"}), 400
+
+    new_user = User()
+    new_user.name = name
+
+    db.session.add(new_user)
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"error": f"user {name} already exsits"}),400
+
+    return jsonify({"message":f"User {name} added"}),201
+
+#show all user
+@app.route('/users',methods=['GET'])
+def show_user():
+    users = User.query.all()
+    return jsonify([users.to_dict() for user in users])
 
 
+#modify user
+@app.route('/users/<int:id>',methods=['PATCH'])
+def update_user(id):
+    user = User.query.get(id) #先把对应的用户从db中找出来
+
+    if not user:
+        return jsonify({"error": "no such user found!"}), 404
+    
+    data = request.form #再根据前端提交的表单给用户赋值
+    if "name" in data:
+        user.name = data["name"]
+
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return jsonify({"error": f"user {user.name} already exist!"}),400
+    
+    return jsonify({"message":f"user {user.name} updated!"}),200
+
+#delete user
+@app.route('/users/<int:id>',methods=['DELETE'])
+def delete_user(id):
+    user = User.query.get(id)
+    if not user:
+        return jsonify({"error": "no such user found!"}), 404
+
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"message":f"user {user.name} deleted"}),200 
+
+#Place part
+@app.route('/places',methods=['POST'])
+def add_place():
+    data = request.form
+    place_name = data["place_name"]
+    country = data["country"]
+
+    if not place_name or not country:
+        return jsonify({"error":"place input place and country"})
     
 
-        
+    new_place = Place()
+    new_place.place_name = place_name
+    new_place.country = country
 
+    db.session.add(new_place)
+
+    db.session.commit()
+    return jsonify({"message":f"new place {place_name} added!"})
+
+
+#show place
+@app.route('/places',methods=['GET'])
+def show_place():
+    places = Place.query.all()
+    return jsonify([place.to_dict() for place in places]),200
+
+
+#modify place
+@app.route('/places/<int:id>',methods=['PATCH'])
+def update_place(id):
+    place = Place.query.get(id)
+
+    if not place:
+        return jsonify({"error": "no such place found!"}), 404
     
+    data = request.form
+
+    if "place_name" in data:
+        place.place_name = data["place_name"]
+
+    if "country" in data:
+        place.country = data["country"]
+
+    db.session.commit()
+    return jsonify({"message":f"place {place.place_name} updated"}),200
 
 
-
-
-
-
-
-
-
-
-
-
+#delete place
+@app.route('/places/<int:id>',methods=['DELETE'])
+def delete_place(id):
+    place = Place.query.get(id)
+    if not place:
+        return jsonify({"error": "no such place found!"}), 404
+    
+    db.session.delete(place)
+    db.session.commit()
+    return jsonify({"message":f"place {place.place_name} deleted"}),200
 
 
 
