@@ -50,6 +50,13 @@ class Place(db.Model):
     place_name = db.Column(db.String(80), nullable=False)
     country = db.Column(db.String(100), nullable=False)
 
+    def to_dict(self):
+        return {
+            "id":self.id,
+            "place_name":self.place_name,
+            "country":self.country
+        }
+
 
 
 
@@ -93,6 +100,12 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
+
+    def to_dict(self):
+        return {
+            "id" : self.id,
+            "name" : self.name
+        }
 
 #fruits_users table
 class FruitUser(db.Model):
