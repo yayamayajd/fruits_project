@@ -1,0 +1,19 @@
+<!-- show_fruit.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ fruit.official_name }}</title>
+</head>
+<body>
+    <h1>{{ fruit.official_name }}</h1>
+    <p>Scientific Name: {{ fruit.scientific_name }}</p>
+    <p>Cultivar: {{ fruit.cultivar }}</p>
+    <p><a href="/fruits/{{ fruit.id }}/reviews">View Reviews</a></p>
+    <a href="/fruits/{{ fruit.id }}/edit">Edit</a>
+    <form action="/fruits/{{ fruit.id }}/delete" method="post">
+        <button type="submit">Delete</button>
+    </form>
+</body>
+</html>

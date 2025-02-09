@@ -1,0 +1,30 @@
+<!-- reviews.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ fruit.official_name }} Reviews</title>
+</head>
+<body>
+    <h1>Reviews for {{ fruit.official_name }}</h1>
+    <form action="/fruits/{{ fruit.id }}/reviews" method="post">
+        <input type="number" name="taste_score" placeholder="Taste Score (0-10)" required>
+        <input type="number" name="experience_score" placeholder="Experience Score (0-10)" required>
+        <textarea name="review" placeholder="Write your review"></textarea>
+        <button type="submit">Add Review</button>
+    </form>
+    <ul>
+        {% for review in reviews %}
+            <li>
+                Taste: {{ review.taste_score }}, Experience: {{ review.experience_score }}<br>
+                {{ review.review }}
+                <form action="/reviews/{{ review.id }}/delete" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/fruits/{{ fruit.id }}">Back to Fruit</a>
+</body>
+</html>

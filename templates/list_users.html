@@ -1,0 +1,27 @@
+<!-- list_users.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List</title>
+</head>
+<body>
+    <h1>Users List</h1>
+    <form action="/users" method="post">
+        <input type="text" name="name" placeholder="Enter User Name" required>
+        <button type="submit">Add User</button>
+    </form>
+    <ul>
+        {% for user in users %}
+            <li>
+                {{ user.name }}
+                <form action="/users/{{ user.id }}/delete" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/">Back to Home</a>
+</body>
+</html>

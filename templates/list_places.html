@@ -1,0 +1,28 @@
+<!-- list_places.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Places List</title>
+</head>
+<body>
+    <h1>Places List</h1>
+    <form action="/places" method="post">
+        <input type="text" name="place_name" placeholder="Enter Place Name" required>
+        <input type="text" name="country" placeholder="Enter Country" required>
+        <button type="submit">Add Place</button>
+    </form>
+    <ul>
+        {% for place in places %}
+            <li>
+                {{ place.place_name }}, {{ place.country }}
+                <form action="/places/{{ place.id }}/delete" method="post" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="/">Back to Home</a>
+</body>
+</html>

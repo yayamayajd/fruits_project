@@ -20,7 +20,7 @@ class Fruit(db.Model):
     tried_date = db.Column(db.Date, nullable=True)
 
     #FK
-    place_id = db.Column(db.Integer, db.ForeignKey('places.id'), ondelete="SET NULL") #单引号表示普通字符串，双引号用于需要嵌套单引号的情况
+    place_id = db.Column(db.Integer, db.ForeignKey('places.id',ondelete="SET NULL")) #单引号表示普通字符串，双引号用于需要嵌套单引号的情况
     way_id = db.Column(db.Integer, db.ForeignKey('ways_to_get.id', ondelete="SET NULL"), nullable=True)
 
     #relations
@@ -83,7 +83,7 @@ class FruitReview(db.Model):
     experience_score = db.Column(db.Integer, nullable=False)
     review = db.Column(db.Text, nullable=True)
 
-    fruit = db.relationship("Fruit", backref="fruit_reviews") #once delete the fruit, delete all follow info  
+
 
     def to_dict(self):
         return {

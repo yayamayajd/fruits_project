@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fruit Database</title>
+</head>
+<body>
+    <h1>{{ fruit.official_name }}</h1>
+    <img src="{{ fruit.image_url }}" alt="{{ fruit.official_name }}" style="max-width: 300px;">
+
+    <ul>
+        <li><strong>Other Name:</strong> {{ fruit.other_name }}</li>
+        <li><strong>Scientific Name:</strong> {{ fruit.scientific_name }}</li>
+        <li><strong>Cultivar:</strong> {{ fruit.cultivar }}</li>
+        <li><strong>Other Links:</strong> <a href="{{ fruit.other_links }}">{{ fruit.other_links }}</a></li>
+        <li><strong>Special Condition:</strong> {{ fruit.special_condition }}</li>
+        <li><strong>Tried Date:</strong> {{ fruit.tried_date }}</li>
+        <li><strong>Place:</strong> {{ fruit.place.place_name if fruit.place else 'N/A' }}</li>
+        <li><strong>Way to Get:</strong> {{ fruit.way.method if fruit.way else 'N/A' }}</li>
+    </ul>
+
+    <a href="/fruits/{{ fruit.id }}/edit">Edit</a>
+    <form action="/fruits/{{ fruit.id }}/delete" method="post" style="display:inline;">
+        <button type="submit">Delete</button>
+    </form>
+    <br><br>
+    <a href="/fruits">Back to List</a>
+</body>
+</html>
