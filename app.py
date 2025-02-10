@@ -117,6 +117,8 @@ def update_fruit_info(id):
         db.session.commit()
 
         return redirect(url_for('show_fruit', id=fruit.id))
+    return render_template('fruit_detail.html', fruit=fruit)
+    
     
     
 
