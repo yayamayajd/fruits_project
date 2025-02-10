@@ -24,30 +24,40 @@ def index():
 @app.route('/fruits',methods=["GET"])
 def show_list_and_query_fruits():
     search_key = request.args.get("search_key")
+    page = request.args.get('page', 1, type=int)
+    per_page = 20  # 每页显示20个水果
 
     if search_key:
         #check all the official name and return a list incl the results
         #.filter is condition such like WHERE in SQL
         fruits = Fruit.query.filter(Fruit.official_name.ilike(f"%{search_key}%")).all() 
         print("here is the result:",fruits)
-        return render_template('list_fruits.html', fruits=fruits)                                  #前端页面
+
+        if not fruits:
+            return render_template('no_search_result.html')
+
+        return render_template('list_fruits.html', fruits=fruits,pagination=None)                                  #前端页面
     
     
-    page = request.args.get('page', 1, type=int)
-    per_page = 20  # 每页显示10个水果
+
     pagination = Fruit.query.paginate(page=page, per_page=per_page, error_out=False)
     fruits = pagination.items
-    return render_template('list_fruits.html', fruits=fruits, pagination=pagination, next_url=url_for('show_list_and_query_fruits', page=pagination.next_num) if pagination.has_next else None, prev_url=url_for('show_list_and_query_fruits', page=pagination.prev_num) if pagination.has_prev else None)
+    return render_template(
+        'list_fruits.html',
+        fruits=fruits,
+        pagination=pagination,
+        next_url=url_for('show_list_and_query_fruits', page=pagination.next_num) if pagination.has_next else None,
+        prev_url=url_for('show_list_and_query_fruits', page=pagination.prev_num) if pagination.has_prev else None
+    )
 
 
-
-
-
-@app.route('/fruits', methods=["POST"])   #添加成功之后是否可以重新定向到首页？
+@app.route('/fruits/add', methods=['POST','GET'])   #添加成功之后是否可以重新定向到首页？
 def add_fruit():
     if request.method == "POST":
         data = request.form
-        print("here is the info you want to add",data)
+        tried_date = data.get("tried_date")
+        if not tried_date:
+            tried_date = None
         fruit = Fruit(
             official_name=data["official_name"], #第一句因为名字不能为空所以是硬性校验
             scientific_name=data.get("scientific_name"), #之后的.get都是可选字段，可以为空，所以用.get
@@ -55,13 +65,13 @@ def add_fruit():
             cultivar=data.get("cultivar"),
             other_links=data.get("other_links"),
             special_condition=data.get("special_condition"),
-            tried_date=data.get("tried_date")
+            tried_date=tried_date
         )
         db.session.add(fruit)
         db.session.commit()
         print("fruit information has beed added:",fruit.official_name)
         return redirect(url_for('show_list_and_query_fruits'))
-
+    return render_template('add_fruit.html')
     
 
 
@@ -73,7 +83,7 @@ def show_fruit(id):
     fruit = Fruit.query.get(id)
     if not fruit:
         print("no such fruit!")
-        return jsonify({"error": "No such fruit found!"}), 404
+        return render_template('no_search_result.html')
 
     #return jsonify(fruit.to_dict())
     return render_template('fruit_detail.html', fruit=fruit)                                       #前端页面
@@ -85,7 +95,7 @@ def show_fruit(id):
 def update_fruit_info(id):
     fruit = Fruit.query.get(id)
     if not fruit:
-        return jsonify({"error": "No such fruit found!"}), 404
+        return render_template('no_search_result.html')
     
     if request.method == 'POST':
         data = request.form
@@ -115,7 +125,7 @@ def update_fruit_info(id):
 def delete_fruit(id):
     fruit = Fruit.query.get(id) #利用id找出水果
     if not fruit:
-        return jsonify({"error": "No such fruit found!"}), 404
+        return render_template('no_search_result.html')
     
     db.session.delete(fruit)
     db.session.commit()
@@ -152,7 +162,7 @@ def show_fruit_review(id):
         #这个页面应该直接后接水果的详细信息展示页面，水果详细信息后面应该有一个查看评论的按钮，跳转这个界面，这个页面也是展示某个水果id的评论
     if not fruit:
         print("no such fruit!")
-        return jsonify({"error": "No such fruit found!"}), 404
+        return render_template('no_search_result.html')
     
     reviews = FruitReview.query.filter_by(fruit_id=id).all() #模糊匹配
     return render_template('reviews.html', fruit=fruit, reviews=reviews)
@@ -162,7 +172,7 @@ def add_review(id):
     #if not the post then show all fruit and reviews
     fruit = Fruit.query.get(id)
     if not fruit:
-        return jsonify({"error": "No such fruit found!"}), 404
+        return render_template('no_search_result.html')
     
     if request.method == 'POST':
         data = request.form
@@ -332,7 +342,7 @@ def delete_user(id):
 
 
 #Place part
-@app.route('/places',methods=['POST'])
+@app.route('/places/add',methods=['POST','GET'])
 def add_place():
     data = request.form
     place_name = data["place_name"]
