@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Fruits List</h1>
-    <a href="/fruits/add">Add New Fruit</a>
+    <a href="/fruits/add">Click me to add new fruit</a>
     <form action="/fruits" method="get">
         <input type="text" name="search_key" placeholder="Search fruits">
         <button type="submit">Search</button>
@@ -17,8 +17,8 @@
         {% for fruit in fruits %}
             <li>
                 <a href="/fruits/{{ fruit.id }}">{{ fruit.official_name }}</a>
-                <form action="/fruits/{{ fruit.id }}/delete" method="post" style="display:inline;">
-                    <button type="submit">Delete</button>
+                <!--form action="/fruits/{{ fruit.id }}/delete" method="post" style="display:inline;">
+                    <button type="submit">Delete</button-->
                 </form>
             </li>
         {% endfor %}
@@ -29,5 +29,7 @@
     {% if pagination.has_next %}
         <a href="{{ url_for('show_list_and_query_fruits', page=pagination.next_num) }}">Next</a>
     {% endif %}
+</ul>
+<a href="/">Back to Home</a>
 </body>
 </html>

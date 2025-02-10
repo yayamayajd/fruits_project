@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Places List</h1>
-    <form action="/places" method="post">
+    <form action="/places/add" method="post">
         <input type="text" name="place_name" placeholder="Enter Place Name" required>
         <input type="text" name="country" placeholder="Enter Country" required>
         <button type="submit">Add Place</button>
@@ -17,8 +17,8 @@
         {% for place in places %}
             <li>
                 {{ place.place_name }}, {{ place.country }}
-                <form action="/places/{{ place.id }}/delete" method="post" style="display:inline;">
-                    <button type="submit">Delete</button>
+                <!--form action="/places/{{ place.id }}/delete" method="post" style="display:inline;">
+                    <button type="submit">Delete</button-->
                 </form>
             </li>
         {% endfor %}

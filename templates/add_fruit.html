@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Fruit</title>
+</head>
+<body>
+    <h1>Add a New Fruit</h1>
+    <form action="/fruits/add" method="POST">
+        <label for="official_name">Official Name (required):</label><br>
+        <input type="text" id="official_name" name="official_name" required><br><br>
+
+        <label for="scientific_name">Scientific Name:</label><br>
+        <input type="text" id="scientific_name" name="scientific_name"><br><br>
+
+        <label for="image_url">Image URL:</label><br>
+        <input type="url" id="image_url" name="image_url"><br><br>
+
+        <label for="cultivar">Cultivar:</label><br>
+        <input type="text" id="cultivar" name="cultivar"><br><br>
+
+        <label for="other_links">Other Links:</label><br>
+        <input type="url" id="other_links" name="other_links"><br><br>
+
+        <label for="special_condition">Special Condition:</label><br>
+        <input type="text" id="special_condition" name="special_condition"><br><br>
+
+        <label for="tried_date">Tried Date:</label><br>
+        <input type="date" id="tried_date" name="tried_date"><br><br>
+
+        <button type="submit">Add Fruit</button>
+    </form>
+</body>
+</html>
