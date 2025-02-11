@@ -9,6 +9,19 @@
     <title>{{ fruit.official_name }} Reviews</title>
 </head>
 <body>
+    <div id="top">
+        <h1>Fruitproject</h1>
+    </div>
+    <div id="menu">
+        <nav>
+            <a href="/">Main</a>
+            <a href="/fruits">Fruits</a>
+            <a href="/users">Users</a> 
+            <a href="/places">Places</a>
+            
+        </nav>
+
+    </div>
     <h2>Reviews for {{ fruit.official_name }}</h2>
     <form action="/fruits/{{ fruit.id }}/reviews" method="post">
         <input type="number" name="taste_score" placeholder="Taste Score (0-10)" required>
@@ -16,7 +29,7 @@
         <textarea name="review" placeholder="Write your review"></textarea>
         <button type="submit">Add Review</button>
     </form>
-    <ul>
+    <ul class="review">
         {% for review in reviews %}
             <li>
                 Taste: {{ review.taste_score }}, Experience: {{ review.experience_score }}<br>

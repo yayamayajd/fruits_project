@@ -9,12 +9,25 @@
     <title>Users List</title>
 </head>
 <body>
+    <div id="top">
+        <h1>Fruitproject</h1>
+    </div>
+    <div id="menu">
+        <nav>
+            <a href="/">Main</a>
+            <a href="/fruits">Fruits</a>
+            <a href="/users">Users</a> 
+            <a href="/places">Places</a>
+            
+        </nav>
+
+    </div>
     <h2>Users List</h2>
     <form action="/users" method="post">
         <input type="text" name="name" placeholder="Enter User Name" required>
         <button type="submit">Add User</button>
     </form>
-    <ul>
+    <ul class="users">
         {% for user in users %}
             <li>
                 {{ user.name }}

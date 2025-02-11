@@ -7,8 +7,22 @@
     <title>Add Fruit</title>
 </head>
 <body>
+    <div id="top">
+        <h1>Fruitproject</h1>
+    </div>
+    <div id="menu">
+        <nav>
+            <a href="/">Main</a>
+            <a href="/fruits">Fruits</a>
+            <a href="/users">Users</a> 
+            <a href="/places">Places</a>
+            
+        </nav>
+
+    </div>
     <h2>Add a New Fruit</h2>
     <form action="/fruits/add" method="POST">
+        <p class="fruitdetail" class="addfruit">
         <label for="official_name">Official Name (required):</label><br>
         <input type="text" id="official_name" name="official_name" required><br><br>
 
@@ -31,6 +45,7 @@
         <input type="date" id="tried_date" name="tried_date"><br><br>
 
         <button type="submit">Add Fruit</button>
+        </p>
     </form>
     <a href="/fruits">Back to List</a>
 </body>
