@@ -83,6 +83,18 @@ class FruitReview(db.Model):
     experience_score = db.Column(db.Integer, nullable=False)
     review = db.Column(db.Text, nullable=True)
 
+    user_associations = db.relationship("ReviewUser", backref="fruit_review", cascade="all, delete-orphan")
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "fruit_id": self.fruit_id,
+            "taste_score": self.taste_score,
+            "experience_score": self.experience_score,
+            "review": self.review
+        }
+
+
 
 
     def to_dict(self):
@@ -114,6 +126,29 @@ class FruitUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fruit_id = db.Column(db.Integer, db.ForeignKey('fruits.id', ondelete="CASCADE"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+
+    user = db.relationship("User", backref="fruit_combination")
+
+
+
+
+
+
+class ReviewUser(db.Model):
+    __tablename__ = 'review_users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    review_id = db.Column(db.Integer, db.ForeignKey('fruit_reviews.id', ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+
+
+    user = db.relationship("User", backref="review_associations")
+    review = db.relationship("FruitReview", backref="review_link")
+
+
+
+
+
 
 #video table
 class FruitVideo(db.Model):

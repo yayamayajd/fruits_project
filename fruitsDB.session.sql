@@ -53,3 +53,16 @@ CREATE TABLE fruit_videos (
     description TEXT,
     video_link TEXT
 );
+
+
+CREATE TABLE review_users (
+    id SERIAL PRIMARY KEY,
+    review_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY (review_id) REFERENCES fruit_reviews(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+
+SELECT * FROM review_users;
+
