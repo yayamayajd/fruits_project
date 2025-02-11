@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, render_template,redirect,url_for
-from models import db, Fruit, FruitReview, FruitUser,User,Place
+from models import db, Fruit, FruitReview, FruitUser,User,Place,ReviewUser
 from sqlalchemy.exc import IntegrityError
 from config import Config
 
@@ -84,9 +84,12 @@ def show_fruit(id):
     if not fruit:
         print("no such fruit!")
         return render_template('no_search_result.html')
+    users = User.query.all()
+    reviews = FruitReview.query.filter_by(fruit_id=id).all()
+    
 
     #return jsonify(fruit.to_dict())
-    return render_template('fruit_detail.html', fruit=fruit)                                       #前端页面
+    return render_template('fruit_detail.html', fruit=fruit,reviews=reviews,users=users)                                       #前端页面
 
 
 
@@ -107,6 +110,8 @@ def update_fruit_info(id):
             fruit.image_url = data["image_url"]
         if "tried_date" in data:
             fruit.tried_date = data["tried_date"]
+        else:
+            fruit.tried_date = None
         if "cultivar" in data:
             fruit.cultivar = data["cultivar"]
         if "special_condition" in data:
@@ -117,7 +122,7 @@ def update_fruit_info(id):
         db.session.commit()
 
         return redirect(url_for('show_fruit', id=fruit.id))
-    return render_template('fruit_detail.html', fruit=fruit)
+    return render_template('update_fruit.html', fruit=fruit)
     
     
     
@@ -166,8 +171,13 @@ def show_fruit_review(id):
         print("no such fruit!")
         return render_template('no_search_result.html')
     
-    reviews = FruitReview.query.filter_by(fruit_id=id).all() #模糊匹配
+    reviews = FruitReview.query.filter_by(fruit_id=id).all()
     return render_template('reviews.html', fruit=fruit, reviews=reviews)
+
+
+
+
+
 
 @app.route('/fruits/<int:id>/reviews', methods=['POST'])
 def add_review(id):
@@ -176,26 +186,42 @@ def add_review(id):
     if not fruit:
         return render_template('no_search_result.html')
     
-    if request.method == 'POST':
-        data = request.form
-        taste_score = data.get("taste_score",0)
-        experience_score = data.get("experience_score",0)
-        review = data.get("review")
-    
-        if not ( 0 <= taste_score <= 10 and 0 <= experience_score <= 10):
-            return jsonify({"error":"the score can be only between 0-10!"}),400
-    
-        new_review = FruitReview(
-            fruit_id=id,
-            taste_score=taste_score,
-            experience_score=experience_score,
-            review=review
-        )
+    data = request.form
+    user_id = data.get("user_id")
 
-        db.session.add(new_review)
-        db.session.commit()
+    print(f"User ID: {user_id}")
 
-        return redirect(url_for('reviews', id=id))
+    taste_score = int(data.get("taste_score",0))
+    experience_score = int(data.get("experience_score",0))
+    review = data.get("review")
+
+    
+    
+    user = User.query.get(user_id)
+    if not user:
+        return render_template('no_search_result.html')
+    
+    if not ( 0 <= taste_score <= 10 and 0 <= experience_score <= 10):
+        return jsonify({"error":"the score can be only between 0-10!"}),400
+    
+    
+    
+    new_review = FruitReview(
+        fruit_id=id,
+        taste_score=taste_score,
+        experience_score=experience_score,
+        review=review
+    )
+
+    db.session.add(new_review)
+    db.session.commit()
+
+    review_user = ReviewUser(review_id=new_review.id, user_id=user.id)
+    db.session.add(review_user)
+    db.session.commit()
+
+    return redirect(url_for('show_fruit', id=id))
+
 
 
 
@@ -217,7 +243,7 @@ def update_review(id):
             if not 0 <= taste_score <= 10:
                 return jsonify({"error":"the score can be only between 0-10!"}),400
         
-        review.test_score = taste_score
+        review.taste_score = taste_score
 
         if "experience_score" in data:
             experience_score = data["experience_score"]
@@ -231,7 +257,8 @@ def update_review(id):
 
         db.session.commit()
         print(f"review {id} has been updated!")
-        return redirect(url_for('reviews', id=review.fruit_id))
+        return redirect(url_for('show_fruit', id=id))  # 修正为 show_fruit
+
 
 
 #delete review
@@ -245,7 +272,8 @@ def delete_review(id):
     db.session.delete(review)
     db.session.commit()
     print(f"review {id} deleted")
-    return redirect(url_for('reviews', id=review.fruit_id))
+    return redirect(url_for('show_fruit', id=id))  # 修正为 show_fruit
+
 
 
 
@@ -288,7 +316,8 @@ def add_user():
         db.session.rollback()
         return jsonify({"error": f"user {name} already exsits"}),400
 
-    return redirect(url_for('users'))
+    return redirect(url_for('index'))
+
 
 #show all user
 @app.route('/users',methods=['GET'])
@@ -315,7 +344,8 @@ def update_user(id):
         db.session.rollback()
         return jsonify({"error": f"user {user.name} already exist!"}),400
     
-    return redirect(url_for('users'))
+    return redirect(url_for('show_user'))
+
 
 #delete user
 @app.route('/users/<int:id>/delete',methods=['POST'])
@@ -369,6 +399,12 @@ def add_place():
 def show_place():
     places = Place.query.all()
     return jsonify([place.to_dict() for place in places]),200
+
+
+
+
+
+
 
 
 #modify place
