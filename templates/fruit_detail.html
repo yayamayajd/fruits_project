@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='format.css') }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fruit Project</title>
 </head>
 
 <body>
-    <h1>{{ fruit.official_name }}</h1>
+    <h2>{{ fruit.official_name }}</h2>
     <img src="{{ fruit.image_url }}" alt="{{ fruit.official_name }}" style="max-width: 300px;">
 
     <ul>
@@ -21,11 +23,57 @@
         <li><strong>Way to Get:</strong> {{ fruit.way.method if fruit.way else 'N/A' }}</li>
     </ul>
 
-    <a href="/fruits/{{ fruit.id }}/edit">Edit</a>
+    <a href="/fruits/{{ fruit.id }}/update">Edit</a>
     <form action="/fruits/{{ fruit.id }}/delete" method="post" style="display:inline;">
         <button type="submit">Delete</button>
     </form>
     <br><br>
     <a href="/fruits">Back to List</a>
+
+
+
+
+
+    <h2>Reviews</h2>
+    <ul>
+        {% for review in reviews %}
+            <li>
+                <strong>
+                    {% for user_assoc in review.user_associations %}
+                        {{ user_assoc.user.name }}
+                    {% endfor %}
+                </strong>:
+                Taste Score: {{ review.taste_score }},
+                Experience Score: {{ review.experience_score }}<br>
+                {{ review.review }}
+            </li>
+        {% else %}
+            <li>No reviews yet</li>
+        {% endfor %}
+    </ul>
+    
+    
+
+    <h3>Add a Review</h3>
+    <form action="/fruits/{{ fruit.id }}/reviews" method="post">
+        <label for="user_id">Select User:</label>
+        <select name="user_id" id="user_id" required>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.name }}</option>
+            {% endfor %}
+        </select><br><br>
+    
+        <label for="taste_score">Taste Score (0-10):</label>
+        <input type="number" name="taste_score" min="0" max="10" required><br><br>
+    
+        <label for="experience_score">Experience Score (0-10):</label>
+        <input type="number" name="experience_score" min="0" max="10" required><br><br>
+    
+        <label for="review">Review:</label><br>
+        <textarea name="review" rows="4" cols="50" required></textarea><br><br>
+    
+        <button type="submit">Submit Review</button>
+    </form>
+
 </body>
 </html>

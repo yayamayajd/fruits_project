@@ -3,11 +3,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='format.css') }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ fruit.official_name }} Reviews</title>
 </head>
 <body>
-    <h1>Reviews for {{ fruit.official_name }}</h1>
+    <h2>Reviews for {{ fruit.official_name }}</h2>
     <form action="/fruits/{{ fruit.id }}/reviews" method="post">
         <input type="number" name="taste_score" placeholder="Taste Score (0-10)" required>
         <input type="number" name="experience_score" placeholder="Experience Score (0-10)" required>

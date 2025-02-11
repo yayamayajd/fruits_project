@@ -3,11 +3,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='format.css') }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fruits List</title>
 </head>
 <body>
-    <h1>Fruits List</h1>
+    <h2>Fruits List</h2>
     <a href="/fruits/add">Click me to add new fruit</a>
     <form action="/fruits" method="get">
         <input type="text" name="search_key" placeholder="Search fruits">
