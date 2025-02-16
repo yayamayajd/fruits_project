@@ -30,7 +30,9 @@ def show_list_and_query_fruits():
     if search_key:
         #check all the official name and return a list incl the results
         #.filter is condition such like WHERE in SQL
-        fruits = Fruit.query.filter(Fruit.official_name.ilike(f"%{search_key}%")).all() 
+        fruits = db.session.execute(
+            db.select(Fruit).filter(Fruit.official_name.ilike(f"%{search_key}%"))
+        ).scalars().all() 
         print("here is the result:",fruits)
 
         if not fruits:
@@ -80,7 +82,7 @@ def add_fruit():
 
 @app.route('/fruits/<int:id>',methods=['GET'])
 def show_fruit(id):
-    fruit = Fruit.query.get(id)
+    fruit = db.session.get(Fruit, id)
     if not fruit:
         print("no such fruit!")
         return render_template('no_search_result.html')
@@ -96,7 +98,7 @@ def show_fruit(id):
 
 @app.route('/fruits/<int:id>/update',methods=['GET','POST'])
 def update_fruit_info(id):
-    fruit = Fruit.query.get(id)
+    fruit = db.session.get(Fruit, id)
     if not fruit:
         return render_template('no_search_result.html')
     
@@ -130,7 +132,7 @@ def update_fruit_info(id):
 
 @app.route('/fruits/<int:id>/delete',methods=['POST'])
 def delete_fruit(id):
-    fruit = Fruit.query.get(id) #利用id找出水果
+    fruit = db.session.get(Fruit, id)#利用id找出水果
     if not fruit:
         return render_template('no_search_result.html')
     
@@ -165,7 +167,7 @@ def delete_fruit(id):
 
 @app.route('/fruits/<int:id>/reviews', methods=['GET'])
 def show_fruit_review(id):
-    fruit = Fruit.query.get(id)
+    fruit = db.session.get(Fruit, id)
         #这个页面应该直接后接水果的详细信息展示页面，水果详细信息后面应该有一个查看评论的按钮，跳转这个界面，这个页面也是展示某个水果id的评论
     if not fruit:
         print("no such fruit!")
@@ -182,7 +184,7 @@ def show_fruit_review(id):
 @app.route('/fruits/<int:id>/reviews', methods=['POST'])
 def add_review(id):
     #if not the post then show all fruit and reviews
-    fruit = Fruit.query.get(id)
+    fruit = db.session.get(Fruit, id)
     if not fruit:
         return render_template('no_search_result.html')
     
@@ -230,7 +232,7 @@ def add_review(id):
 #modify review
 @app.route('/reviews/<int:id>/update',methods=['GET','POST'])
 def update_review(id):
-    review = FruitReview.query.get(id)
+    review = db.session.get(FruitReview, id)
     if not review:
         print("no such review!")
         return jsonify({"error": "No such review found!"}), 404
@@ -243,7 +245,7 @@ def update_review(id):
             if not 0 <= taste_score <= 10:
                 return jsonify({"error":"the score can be only between 0-10!"}),400
         
-        review.taste_score = taste_score
+            review.taste_score = taste_score
 
         if "experience_score" in data:
             experience_score = data["experience_score"]
@@ -264,7 +266,8 @@ def update_review(id):
 #delete review
 @app.route('/review/<int:id>/delete', methods=['POST'])
 def delete_review(id):
-    review = FruitReview.query.get(id)
+    review = db.session.get(FruitReview, id)  
+
     if not review:
         print("no such review!")
         return jsonify({"error": "No such review found!"}), 404
@@ -320,16 +323,17 @@ def add_user():
 
 
 #show all user
-@app.route('/users',methods=['GET'])
+@app.route('/users', methods=['GET'])
 def show_user():
-    users = User.query.all()
+    users = db.session.execute(db.select(User)).scalars().all()
     return render_template('list_users.html', users=users)
+
 
 
 #modify user
 @app.route('/users/<int:id>/update',methods=['POST'])
 def update_user(id):
-    user = User.query.get(id) #先把对应的用户从db中找出来
+    user = db.session.get(User, id)  #先把对应的用户从db中找出来
 
     if not user:
         return jsonify({"error": "no such user found!"}), 404
@@ -348,15 +352,41 @@ def update_user(id):
 
 
 #delete user
-@app.route('/users/<int:id>/delete',methods=['POST'])
+@app.route('/users/<int:id>/delete', methods=['POST'])
 def delete_user(id):
-    user = User.query.get(id)
+    user = db.session.get(User, id)  
     if not user:
         return jsonify({"error": "no such user found!"}), 404
 
     db.session.delete(user)
     db.session.commit()
-    return redirect(url_for('users')) 
+    
+    return redirect(url_for('show_user')) 
+
+
+
+@app.route('/user/<int:id>/user_fruits_list',methods=['GET'])
+def show_user_fruits_list(id):
+    user = db.session.get(User, id) 
+    if not user:
+        return jsonify({"error": "no such user found!"}), 404
+    
+    if not user.fruits_eaten_by_user:
+        return render_template('no_search_result.html'),404
+    
+    fruit_list = [
+        {
+        "id": fruit.id,
+        "official_name": fruit.official_name
+        }
+        for fruit in user.fruits_eaten_by_user
+    ]
+    return render_template('user_fruit_list.html', user=user, fruits=fruit_list)
+
+
+
+
+
 
 
 
