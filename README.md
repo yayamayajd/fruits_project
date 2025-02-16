@@ -1,11 +1,18 @@
 fruits_project start
 
 Plan:
+
+
 DB:Postgres
+
 Backend:Python+Flask
+
 Frotend: HTML+JINJA2
+
 Test: Pytest
+
 CI/CD:Github actions
+
 Deployment: Microk8S/minikube on VM ubuntu on home NAS in local network 
 
 
@@ -13,11 +20,13 @@ Deployment: Microk8S/minikube on VM ubuntu on home NAS in local network
 Dev log:
 
 2025.02.02
+
 DB has built
 models.py has been added
 on process of backend API...
 
 2025.02.07
+
 modified all endpoint as close as 'RESTFul'
 add the to_dict func to all endpint Class
 
@@ -28,12 +37,14 @@ But released that the endpoint can't be RESTFUL becase I use reder template inst
 So I move to the task 'all endpints should be RESTFUL to V2.0', add study plan for JS after V1.0 deployed
 
 2025.2.12
+
 Checked the home NAS and deployment environment; the hardware supports virtual machines, and the memory is sufficient for MicroK8s.
 Suddenly noticed log warnings—detected signs of DDoS attacks and something resembling SQL injection.
 Shut down the server for inspection. After scanning all ports, found two unknown ports with no identifiable bound processes, and they couldn't be terminated with standard commands.
 Since it was too late, decided to sleep first and investigate later.
 
 2025.2.13
+
 Enhanced NAS security measures, reconfigured the static IP address, and performed a full system scan.
 On the router, disabled unnecessary features like AI-Cloud, reviewed all port forwarding rules, and found that the strange port 7788 had finally closed.
 With security concerns addressed, decided to return to API development and adjustments.
