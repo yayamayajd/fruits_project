@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
 
-#use models.py to map db and python variable
+#use models.py to map db and python object
 
 db = SQLAlchemy()
 
@@ -27,8 +27,9 @@ class Fruit(db.Model):
     place = db.relationship("Place", backref="fruits")
     way = db.relationship("WayToGet", backref="fruits")
     reviews = db.relationship("FruitReview", backref="fruit", cascade="all, delete-orphan") #once delete the fruit, delete all follow info
-    users = db.relationship("FruitUser", backref="fruit", cascade="all, delete-orphan")
     videos = db.relationship("FruitVideo", backref="fruit", cascade="all, delete-orphan")
+    users = db.relationship("User", secondary="fruits_users", back_populates="fruits_eaten_by_user", overlaps="fruit_combination")
+
 
     def to_dict(self):
         return {
@@ -83,18 +84,7 @@ class FruitReview(db.Model):
     experience_score = db.Column(db.Integer, nullable=False)
     review = db.Column(db.Text, nullable=True)
 
-    user_associations = db.relationship("ReviewUser", backref="fruit_review", cascade="all, delete-orphan")
-
-    def to_dict(self):
-        return {
-            "id": self.id,
-            "fruit_id": self.fruit_id,
-            "taste_score": self.taste_score,
-            "experience_score": self.experience_score,
-            "review": self.review
-        }
-
-
+    user_associations = db.relationship("ReviewUser", back_populates="fruit_review", cascade="all, delete-orphan")
 
 
     def to_dict(self):
@@ -105,6 +95,9 @@ class FruitReview(db.Model):
             "experience_score": self.experience_score,
             "review": self.review
         }
+
+
+
 
 #users table
 class User(db.Model):
@@ -112,6 +105,10 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
+
+    fruits_eaten_by_user = db.relationship("Fruit", secondary="fruits_users", back_populates="users", overlaps="fruit_combination")
+
+
 
     def to_dict(self):
         return {
@@ -127,7 +124,10 @@ class FruitUser(db.Model):
     fruit_id = db.Column(db.Integer, db.ForeignKey('fruits.id', ondelete="CASCADE"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
 
-    user = db.relationship("User", backref="fruit_combination")
+    user = db.relationship("User", viewonly=True)
+
+
+
 
 
 
@@ -142,8 +142,8 @@ class ReviewUser(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
 
 
-    user = db.relationship("User", backref="review_associations")
-    review = db.relationship("FruitReview", backref="review_link")
+    fruit_review = db.relationship("FruitReview", back_populates="user_associations", overlaps="fruit_review")
+
 
 
 
