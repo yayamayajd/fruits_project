@@ -17,6 +17,8 @@ Deployment: Microk8S/minikube on VM ubuntu on home NAS in local network
 
 
 
+
+
 Dev log:
 
 2025.02.02
@@ -85,6 +87,9 @@ Frontend
 
 The initial HTML pages were too ugly, and the "client" rejected them.
 Eventually, the "client" took matters into their own hands and wrote a CSS template.
+
+
+
 Other Issues
 
 Got too focused on development and forgot to eat and sleep. 😅
