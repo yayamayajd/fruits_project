@@ -259,7 +259,7 @@ def update_review(id):
 
         db.session.commit()
         print(f"review {id} has been updated!")
-        return redirect(url_for('show_fruit', id=id))  # 修正为 show_fruit
+        return redirect(url_for('show_fruit', id=id)) 
 
 
 
@@ -402,7 +402,7 @@ def show_user_fruits_list(id):
 
 
 
-
+#I keep the place and in coming part like vidoe to the next interation(V2.0). 
 #Place part
 @app.route('/places/add',methods=['POST','GET'])
 def add_place():
@@ -438,7 +438,7 @@ def show_place():
 
 
 #modify place
-@app.route('/places/<int:id>',methods=['PATCH'])
+@app.route('/places/<int:id>',methods=['POST'])
 def update_place(id):
     place = Place.query.get(id)
 
