@@ -56,8 +56,38 @@ With security concerns addressed, decided to return to API development and adjus
 2025.2.15
 
 Give uo the directory related to the Place table in version 1.0 and moved it to a later version.
+
 Spent a long time adjusting the relationship definitions between tables. Initially, I took a shortcut by using backref, but this resulted in countless SAWarning messages. However, as the relationships became more complex, backref was no longer sufficient.
+
 The difference between backref and back_populates is that the former requires definition on only one side and automatically creates the reverse relationship, while the latter must be manually defined on both sides.
+
+
+
+2025.2.17
+
+Started writing tests and setting up the necessary environment.
+I discovered an issue: while the NAS has enough memory, the CPU is way too old. This means I have to push its limited performance to the extreme. (I really miss the time when I could do whatever I wanted during my free trial on Azure.)
+
+So, I decided to install the minimal version of Ubuntu Server and configured it with a static IP.
+At the same time, I give uo that using a pipeline to build images directly on the VM. Instead, I plan a alternative approach that is building the images on my loptop/or github sever(neend to figure out the way), pushing them to a Docker registry, and letting Kubernetes on the VM pull and deploy them.
+
+
+
+2025.2.18
+
+After setting up the VM, I ran into issues right on the first update attempt—it couldn’t connect to remote servers.
+The IP and gateway configurations were correct, so I tried ping—only to realize that the mini version of the system didn’t have ping installed. I then tried apt, but it resulted in a dead loop because it couldn't reach remote servers.
+
+Next, I attempted curl google.com and found that DNS resolution wasn’t working, though I could connect using an IP address.
+After some investigation, I realized that the DNS nameserver wasn’t properly configured. I tried manually modifying /etc/resolv.conf using nano or vi, only to find out that neither nano nor vi were installed.
+
+In the end, I updated the nameserver using echo, and the update finally succeeded... but I celebrated too soon.
+
+After a reboot, the changes were lost because /etc/resolv.conf turned out to be a symlink. I had to delete the file, recreate it, and manually write in the nameserver. (Later, while installing Kubernetes, I ran into another DNS restriction issue with Google’s DNS and had to go through another round of trial and error before finally succeeding with Cloudflare’s DNS.)
+
+Once again, I found myself missing the seamless cloud environment. LOL
+
+Anyway, MicroK8s (the lightweight version) is now installed. I tested it with Nginx (and picked up some extra Nginx knowledge along the way), and everything works fine. Just need to install Docker for deployment, and that should be about it! 
 
 
 
@@ -87,6 +117,7 @@ Frontend
 
 The initial HTML pages were too ugly, and the "client" rejected them.
 Eventually, the "client" took matters into their own hands and wrote a CSS template.
+
 
 
 
