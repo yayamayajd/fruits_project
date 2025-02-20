@@ -124,7 +124,9 @@ class FruitUser(db.Model):
     fruit_id = db.Column(db.Integer, db.ForeignKey('fruits.id', ondelete="CASCADE"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
 
+
     user = db.relationship("User", viewonly=True)
+    fruit = db.relationship("Fruit", viewonly=True)
 
 
 
@@ -143,7 +145,7 @@ class ReviewUser(db.Model):
 
 
     fruit_review = db.relationship("FruitReview", back_populates="user_associations", overlaps="fruit_review")
-
+    user = db.relationship("User", backref="review_associations")
 
 
 

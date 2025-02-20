@@ -132,7 +132,7 @@ def update_fruit_info(id):
 
 @app.route('/fruits/<int:id>/delete',methods=['POST'])
 def delete_fruit(id):
-    fruit = db.session.get(Fruit, id)#利用id找出水果
+    fruit = db.session.get(Fruit, id)
     if not fruit:
         return render_template('no_search_result.html')
     
@@ -165,28 +165,18 @@ def delete_fruit(id):
 #Review part
 
 
-@app.route('/fruits/<int:id>/reviews', methods=['GET'])
-def show_fruit_review(id):
-    fruit = db.session.get(Fruit, id)
-        #这个页面应该直接后接水果的详细信息展示页面，水果详细信息后面应该有一个查看评论的按钮，跳转这个界面，这个页面也是展示某个水果id的评论
-    if not fruit:
-        print("no such fruit!")
-        return render_template('no_search_result.html')
-    
-    reviews = FruitReview.query.filter_by(fruit_id=id).all()
-    return render_template('reviews.html', fruit=fruit, reviews=reviews)
-
-
-
-
-
-
-@app.route('/fruits/<int:id>/reviews', methods=['POST'])
-def add_review(id):
+@app.route('/fruits/<int:id>/reviews', methods=['POST','GET'])
+def handle_review(id):
     #if not the post then show all fruit and reviews
     fruit = db.session.get(Fruit, id)
     if not fruit:
         return render_template('no_search_result.html')
+    
+    if request.method == 'GET':
+        reviews = FruitReview.query.filter_by(fruit_id=id).all()
+        users = User.query.all()
+        print("Users:", users)   
+        return render_template('review.html', fruit=fruit, reviews=reviews, users=users)
     
     data = request.form
     user_id = data.get("user_id")
@@ -230,17 +220,20 @@ def add_review(id):
 
 
 #modify review
-@app.route('/reviews/<int:id>/update',methods=['GET','POST'])
+@app.route('/fruits/<int:id>/reviews/update',methods=['GET','POST'])
 def update_review(id):
     review = db.session.get(FruitReview, id)
     if not review:
         print("no such review!")
-        return jsonify({"error": "No such review found!"}), 404
+        return render_template('no_search_result.html')
+    
+    if request.method == 'GET':
+        return render_template('update_review.html', review=review)
 
     if request.method == 'POST':    
         data = request.form
         if "taste_score" in data:
-            taste_score = data["taste_score"]
+            taste_score = int(data["taste_score"])
 
             if not 0 <= taste_score <= 10:
                 return jsonify({"error":"the score can be only between 0-10!"}),400
@@ -248,7 +241,7 @@ def update_review(id):
             review.taste_score = taste_score
 
         if "experience_score" in data:
-            experience_score = data["experience_score"]
+            experience_score = int(data["experience_score"])
             if not 0 <= experience_score <= 10:
                 return jsonify({"error":"the score can be only between 0-10!"}),400 
        
@@ -259,23 +252,24 @@ def update_review(id):
 
         db.session.commit()
         print(f"review {id} has been updated!")
-        return redirect(url_for('show_fruit', id=id)) 
+        return redirect(url_for('show_fruit', id=review.fruit_id)) 
+
 
 
 
 #delete review
-@app.route('/review/<int:id>/delete', methods=['POST'])
+@app.route('/fruits/<int:id>/reviews/delete', methods=['POST'])
 def delete_review(id):
     review = db.session.get(FruitReview, id)  
 
     if not review:
         print("no such review!")
-        return jsonify({"error": "No such review found!"}), 404
+        return render_template('no_search_result.html')
     
     db.session.delete(review)
     db.session.commit()
     print(f"review {id} deleted")
-    return redirect(url_for('show_fruit', id=id))  # 修正为 show_fruit
+    return redirect(url_for('show_fruit', id=id))  
 
 
 
@@ -356,7 +350,7 @@ def update_user(id):
 def delete_user(id):
     user = db.session.get(User, id)  
     if not user:
-        return jsonify({"error": "no such user found!"}), 404
+        return render_template('no_search_result.html')
 
     db.session.delete(user)
     db.session.commit()
@@ -365,11 +359,21 @@ def delete_user(id):
 
 
 
+
+
+
+
+
+
+
+#user_fruits_list related
+
+
 @app.route('/user/<int:id>/user_fruits_list',methods=['GET'])
 def show_user_fruits_list(id):
     user = db.session.get(User, id) 
     if not user:
-        return jsonify({"error": "no such user found!"}), 404
+        return render_template('no_search_result.html'),404
     
     if not user.fruits_eaten_by_user:
         return render_template('no_search_result.html'),404
@@ -382,6 +386,53 @@ def show_user_fruits_list(id):
         for fruit in user.fruits_eaten_by_user
     ]
     return render_template('user_fruit_list.html', user=user, fruits=fruit_list)
+
+
+
+@app.route('/add_fruit_to_user_fruit_list/<int:fruit_id>', methods=['POST'])
+def add_fruit_to_user_from_fruit_detail(fruit_id):
+    fruit = db.session.get(Fruit, fruit_id)
+    if not fruit:
+        return render_template('no_search_result.html'), 404
+
+    user_id = request.form.get('user_id')
+    user = db.session.get(User, user_id)
+    if not user:
+        return render_template('no_search_result.html'), 404
+
+    if fruit in user.fruits_eaten_by_user:
+        return jsonify({"error": "This fruit is already in the user's list!"}), 400
+
+    fruit_user = FruitUser(user_id=user.id, fruit_id=fruit.id)
+    db.session.add(fruit_user)
+    db.session.commit()
+
+    print(f"Fruit '{fruit.official_name}' added to {user.name}'s list!")
+    return redirect(url_for('show_user_fruits_list', id=user.id))
+
+
+
+@app.route('/user/<int:id>/remove_fruit/<int:fruit_id>', methods=['POST'])
+def remove_fruit_from_user(id, fruit_id):
+    fruit_user = FruitUser.query.filter_by(user_id=id, fruit_id=fruit_id).first()
+    if not fruit_user:
+        return jsonify({"error": "This fruit is not in the user's list!"}), 404
+
+    db.session.delete(fruit_user)
+    db.session.commit()
+
+    print(f"Fruit removed from user's list!")
+    return redirect(url_for('show_user_fruits_list', id=id))
+
+
+
+
+
+
+
+
+
+
 
 
 
