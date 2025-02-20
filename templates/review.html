@@ -1,4 +1,3 @@
-<!-- reviews.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,23 +22,48 @@
 
     </div>
     <h2>Reviews for {{ fruit.official_name }}</h2>
-    <form action="/fruits/{{ fruit.id }}/reviews" method="post">
-        <input type="number" name="taste_score" placeholder="Taste Score (0-10)" required>
-        <input type="number" name="experience_score" placeholder="Experience Score (0-10)" required>
-        <textarea name="review" placeholder="Write your review"></textarea>
-        <button type="submit">Add Review</button>
-    </form>
     <ul class="review">
         {% for review in reviews %}
             <li>
-                Taste: {{ review.taste_score }}, Experience: {{ review.experience_score }}<br>
+                <strong>{{ review.user_associations[0].user.name }}</strong>:  
+                Taste Score: {{ review.taste_score }}, Experience Score: {{ review.experience_score }}<br>
                 {{ review.review }}
-                <form action="/reviews/{{ review.id }}/delete" method="post" style="display:inline;">
-                    <button type="submit">Delete</button>
+                
+
+                <a href="{{ url_for('update_review', id=review.id) }}">Edit</a>
+
+                <form action="{{ url_for('delete_review', id=review.id) }}" method="post" style="display:inline;">
+                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
                 </form>
             </li>
-        {% endfor %}
+        {% else %}
+            <li>No reviews yet</li>
+            {% endfor %}
     </ul>
-    <a href="/fruits/{{ fruit.id }}">Back to Fruit</a>
+    
+    
+
+    <h3>Add a Review</h3>
+    <form class="review" action="/fruits/{{ fruit.id }}/reviews" method="post">
+        <label for="user_id">Select User:</label>
+        <select name="user_id" id="user_id" required>
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user.name }}</option>
+            {% endfor %}
+        </select><br><br>
+    
+        <label for="taste_score">Taste Score (0-10):</label>
+        <input type="number" name="taste_score" min="0" max="10" required><br><br>
+    
+        <label for="experience_score">Experience Score (0-10):</label>
+        <input type="number" name="experience_score" min="0" max="10" required><br><br>
+    
+        <label for="review">Review:</label><br>
+        <textarea name="review" rows="4" cols="50" required></textarea><br><br>
+    
+        <button type="submit">Submit Review</button>
+    </form>
+
+    <a href="/fruits">Back to List</a>
 </body>
 </html>

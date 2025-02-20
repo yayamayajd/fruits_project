@@ -32,7 +32,7 @@
                 {{ user.name }}
                 <form action="/users/{{ user.id }}/delete" method="post" style="display:inline;">
                     <a href="/user/{{user.id}}/user_fruits_list">fruit list</a>
-                    <button type="submit">Delete</button>
+                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
                     
                 </form>
             </li>
