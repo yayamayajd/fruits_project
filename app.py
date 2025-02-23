@@ -166,7 +166,7 @@ def delete_fruit(id):
 
 
 @app.route('/fruits/<int:id>/reviews', methods=['POST','GET'])
-def handle_review(id):
+def new_review(id):
     #if not the post then show all fruit and reviews
     fruit = db.session.get(Fruit, id)
     if not fruit:
@@ -189,7 +189,7 @@ def handle_review(id):
 
     
     
-    user = User.query.get(user_id)
+    user = db.session.get(User,user_id)
     if not user:
         return render_template('no_search_result.html')
     
@@ -220,47 +220,51 @@ def handle_review(id):
 
 
 #modify review
-@app.route('/fruits/<int:id>/reviews/update',methods=['GET','POST'])
-def update_review(id):
-    review = db.session.get(FruitReview, id)
+@app.route('/fruits/<int:review_id>/update',methods=['GET','POST'])
+def update_review(review_id):
+    review = db.session.get(FruitReview, review_id)
     if not review:
         print("no such review!")
-        return render_template('no_search_result.html')
+        return render_template('no_search_result.html'),404
     
     if request.method == 'GET':
         return render_template('update_review.html', review=review)
 
     if request.method == 'POST':    
         data = request.form
-        if "taste_score" in data:
-            taste_score = int(data["taste_score"])
+        try:
+            if "experience_score" in data:
 
-            if not 0 <= taste_score <= 10:
-                return jsonify({"error":"the score can be only between 0-10!"}),400
-        
-            review.taste_score = taste_score
+                experience_score = int(data["experience_score"])
+                if not 0 <= experience_score <= 10:
+                    return jsonify({"error":"the score can be only between 0-10!"}),400      
+                review.experience_score = experience_score
+            
+            if "taste_score" in data:
 
-        if "experience_score" in data:
-            experience_score = int(data["experience_score"])
-            if not 0 <= experience_score <= 10:
-                return jsonify({"error":"the score can be only between 0-10!"}),400 
-       
-            review.experience_score = experience_score
+                taste_score = int(data["taste_score"])
+                if not 0 <= taste_score <= 10:
+                    return jsonify({"error":"the score can be only between 0-10!"}),400        
+                review.taste_score = taste_score
 
-        if "review" in data:
-            review.review = data["review"]
+                    
+            if "review" in data:
+                review.review = data["review"]
 
-        db.session.commit()
-        print(f"review {id} has been updated!")
-        return redirect(url_for('show_fruit', id=review.fruit_id)) 
+            db.session.commit()
+            print(f"review {review_id} has been updated!")
+            return redirect(url_for('show_fruit', id=review.fruit_id)) 
+    
+        except ValueError:
+            return jsonify({"error":"must be a INTERGER!"}),400
 
 
 
 
 #delete review
-@app.route('/fruits/<int:id>/reviews/delete', methods=['POST'])
-def delete_review(id):
-    review = db.session.get(FruitReview, id)  
+@app.route('/fruits/<int:review_id>/delete', methods=['POST'])
+def delete_review(review_id):
+    review = db.session.get(FruitReview, review_id)  
 
     if not review:
         print("no such review!")
@@ -268,8 +272,8 @@ def delete_review(id):
     
     db.session.delete(review)
     db.session.commit()
-    print(f"review {id} deleted")
-    return redirect(url_for('show_fruit', id=id))  
+    print(f"review {review_id} deleted")
+    return redirect(url_for('show_fruit', id=review.fruit_id))  
 
 
 
