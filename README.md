@@ -99,6 +99,18 @@ I think learning JavaScript has become an urgent priority now. If I continue add
 
 
 
+February 23, 2025
+
+
+Been busy till midnight every day for the past two weeks, plus exams, kinda running on fumes. Pretty much passed out through the weekend without realizing it. Only had enough energy in the afternoon to finish writing the tests.
+
+Learned something new: transaction—auto rollback is super convenient! At first, I tested directly with the database data, so the transaction didn’t trigger at all. Took me a while to realize I had to manually insert test data. Ended up clearing the database and rewriting the tests.
+
+Got stuck on review_update for a bit. Couldn’t figure out why testing with numbers greater than 10 or less than 0 returned 302 instead of 404. Turns out I’d set min and max limits on the frontend. Since that’s the case, guess it’s fine to just rely on the frontend constraints.
+
+Watching all the tests pass in the end—what a great feeling!
+
+
 
 
 📌 Challenges Encountered in Backend, Frontend, and Database Development📌 
