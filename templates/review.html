@@ -30,9 +30,9 @@
                 {{ review.review }}
                 
 
-                <a href="{{ url_for('update_review', id=review.id) }}">Edit</a>
+                <a href="{{ url_for('update_review', review_id=review.id) }}">Edit</a>
 
-                <form action="{{ url_for('delete_review', id=review.id) }}" method="post" style="display:inline;">
+                <form action="{{ url_for('delete_review', review_id=review.id) }}" method="post" style="display:inline;">
                     <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
                 </form>
             </li>

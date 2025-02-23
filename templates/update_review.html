@@ -22,7 +22,7 @@
     <div class="container">
         <h2>Update Review for Fruit: {{ review.fruit.official_name }}</h2>
 
-        <form class="update-review" action="/fruits/{{ review.id }}/reviews/update" method="post">
+        <form class="update-review" action="{{ url_for('update_review', review_id=review.id) }}" method="post">
             <label for="taste_score">Taste Score (0-10):</label>
             <input type="number" name="taste_score" id="taste_score" min="0" max="10" value="{{ review.taste_score }}" required><br><br>
 
