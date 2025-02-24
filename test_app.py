@@ -2,7 +2,7 @@ import pytest
 from app import app, db
 from config import Config
 from models import Fruit, User, FruitReview,ReviewUser, FruitUser
-from sqlalchemy import text  # ✅ 正确导入 text() 函数
+from sqlalchemy import text  
 
 
 
