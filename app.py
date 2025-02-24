@@ -136,6 +136,11 @@ def delete_fruit(id):
     if not fruit:
         return render_template('no_search_result.html')
     
+    FruitUser.query.filter_by(fruit_id=id).delete()
+
+    for review in fruit.reviews:
+        ReviewUser.query.filter_by(review_id=review.id).delete()
+
     db.session.delete(fruit)
     db.session.commit()
     return redirect(url_for('show_list_and_query_fruits'))
@@ -355,6 +360,10 @@ def delete_user(id):
     user = db.session.get(User, id)  
     if not user:
         return render_template('no_search_result.html')
+    
+    FruitUser.query.filter_by(user_id=id).delete()
+
+    ReviewUser.query.filter_by(user_id=id).delete()
 
     db.session.delete(user)
     db.session.commit()
@@ -407,8 +416,8 @@ def add_fruit_to_user_from_fruit_detail(fruit_id):
     if fruit in user.fruits_eaten_by_user:
         return jsonify({"error": "This fruit is already in the user's list!"}), 400
 
-    fruit_user = FruitUser(user_id=user.id, fruit_id=fruit.id)
-    db.session.add(fruit_user)
+    user.fruits_eaten_by_user.append(fruit)
+
     db.session.commit()
 
     print(f"Fruit '{fruit.official_name}' added to {user.name}'s list!")
@@ -418,15 +427,19 @@ def add_fruit_to_user_from_fruit_detail(fruit_id):
 
 @app.route('/user/<int:id>/remove_fruit/<int:fruit_id>', methods=['POST'])
 def remove_fruit_from_user(id, fruit_id):
-    fruit_user = FruitUser.query.filter_by(user_id=id, fruit_id=fruit_id).first()
-    if not fruit_user:
+    user = db.session.get(User,id)
+    fruit = db.session.get(Fruit,fruit_id)
+    if not user or not fruit:
         return jsonify({"error": "This fruit is not in the user's list!"}), 404
+    
+    if fruit in user.fruits_eaten_by_user:
+        user.fruits_eaten_by_user.remove(fruit)
 
-    db.session.delete(fruit_user)
-    db.session.commit()
+        db.session.commit()
 
-    print(f"Fruit removed from user's list!")
-    return redirect(url_for('show_user_fruits_list', id=id))
+        print(f"Fruit removed from user's list!")
+        return redirect(url_for('show_user_fruits_list', id=id))
+    return render_template("no_search_result.html"),404
 
 
 

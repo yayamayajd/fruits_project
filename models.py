@@ -28,7 +28,7 @@ class Fruit(db.Model):
     way = db.relationship("WayToGet", backref="fruits")
     reviews = db.relationship("FruitReview", backref="fruit", cascade="all, delete-orphan") #once delete the fruit, delete all follow info
     videos = db.relationship("FruitVideo", backref="fruit", cascade="all, delete-orphan")
-    users = db.relationship("User", secondary="fruits_users", back_populates="fruits_eaten_by_user", overlaps="fruit_combination")
+    users = db.relationship("User", secondary="fruits_users", back_populates="fruits_eaten_by_user")
 
 
     def to_dict(self):
@@ -106,7 +106,10 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
 
-    fruits_eaten_by_user = db.relationship("Fruit", secondary="fruits_users", back_populates="users", overlaps="fruit_combination")
+    reviews = db.relationship('ReviewUser', back_populates='associated_user', cascade='all, delete-orphan')
+    fruits_eaten_by_user = db.relationship("Fruit", secondary="fruits_users", back_populates="users")
+
+
 
 
 
@@ -125,8 +128,6 @@ class FruitUser(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
 
 
-    user = db.relationship("User", viewonly=True)
-    fruit = db.relationship("Fruit", viewonly=True)
 
 
 
@@ -144,8 +145,8 @@ class ReviewUser(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
 
 
-    fruit_review = db.relationship("FruitReview", back_populates="user_associations", overlaps="fruit_review")
-    user = db.relationship("User", backref="review_associations")
+    fruit_review = db.relationship("FruitReview", back_populates="user_associations")
+    associated_user = db.relationship("User", back_populates="reviews") 
 
 
 
