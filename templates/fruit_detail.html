@@ -51,7 +51,7 @@
             <li>
                 <strong>
                     {% for user_assoc in review.user_associations %}
-                        {{ user_assoc.user.name }}
+                    {{ user_assoc.associated_user.name }}
                     {% endfor %}
                 </strong>:
                 Taste Score: {{ review.taste_score }},

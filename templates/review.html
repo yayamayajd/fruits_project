@@ -24,18 +24,22 @@
     <h2>Reviews for {{ fruit.official_name }}</h2>
     <ul class="review">
         {% for review in reviews %}
-            <li>
-                <strong>{{ review.user_associations[0].user.name }}</strong>:  
-                Taste Score: {{ review.taste_score }}, Experience Score: {{ review.experience_score }}<br>
-                {{ review.review }}
-                
-
-                <a href="{{ url_for('update_review', review_id=review.id) }}">Edit</a>
-
-                <form action="{{ url_for('delete_review', review_id=review.id) }}" method="post" style="display:inline;">
-                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
-                </form>
-            </li>
+        <li>
+            {% if review.user_associations and review.user_associations[0].associated_user %}
+                <strong>{{ review.user_associations[0].associated_user.name }}</strong>:
+            {% else %}
+                <strong>Unknown User</strong>:
+            {% endif %}
+            Taste Score: {{ review.taste_score }}, Experience Score: {{ review.experience_score }}<br>
+            {{ review.review }}
+        
+            <a href="{{ url_for('update_review', review_id=review.id) }}">Edit</a>
+        
+            <form action="{{ url_for('delete_review', review_id=review.id) }}" method="post" style="display:inline;">
+                <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+            </form>
+        </li>
+        
         {% else %}
             <li>No reviews yet</li>
             {% endfor %}
