@@ -1,6 +1,6 @@
-# Fruits_project start (H2)
+## Fruits_project start
 
-# Plan:(H3)
+### Plan:
 
 
 *DB*:Postgres
@@ -19,7 +19,7 @@
 
 
 
-# Dev log: (H3)
+### Dev log: 
 
 **2025.02.02**
 
@@ -113,7 +113,7 @@ Watching all the tests pass in the end—what a great feeling!
 
 
 
-# 📌 Challenges Encountered in Backend, Frontend, and Database Development📌 (H3)
+### 📌 Challenges Encountered in Backend, Frontend, and Database Development📌 
 
 
 **Database**
