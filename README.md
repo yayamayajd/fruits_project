@@ -1,51 +1,51 @@
-fruits_project start
+# Fruits_project start (H2)
 
-Plan:
-
-
-DB:Postgres
-
-Backend:Python+Flask
-
-Frotend: HTML+JINJA2
-
-Test: Pytest
-
-CI/CD:Github actions
-
-Deployment: Microk8S/minikube on VM ubuntu on home NAS in local network 
+# Plan:(H3)
 
 
+*DB*:Postgres
+
+*Backend*:Python+Flask
+
+*Frotend*: HTML+JINJA2
+
+*Test*: Pytest
+
+*CI/CD*:Github actions
+
+*Deployment*: Microk8S/minikube on VM ubuntu on home NAS in local network 
 
 
 
-Dev log:
 
-2025.02.02
+
+# Dev log: (H3)
+
+**2025.02.02**
 
 DB has built
 models.py has been added
 on process of backend API...
 
-2025.02.07
+**2025.02.07**
 
 modified all endpoint as close as 'RESTFul'
 add the to_dict func to all endpint Class
 
-2025.2.10
+**2025.2.10**
 
 Successfully linked the comment feature on the fruit detail page to users.
 But released that the endpoint can't be RESTFUL becase I use reder template instead return json data. But to catch json I need to use JS to write fronten.
 So I move to the task 'all endpints should be RESTFUL to V2.0', add study plan for JS after V1.0 deployed
 
-2025.2.12
+**2025.2.12**
 
 Checked the home NAS and deployment environment; the hardware supports virtual machines, and the memory is sufficient for MicroK8s.
 Suddenly noticed log warnings—detected signs of DDoS attacks and something resembling SQL injection.
 Shut down the server for inspection. After scanning all ports, found two unknown ports with no identifiable bound processes, and they couldn't be terminated with standard commands.
 Since it was too late, decided to sleep first and investigate later.
 
-2025.2.13
+**2025.2.13**
 
 Enhanced NAS security measures, reconfigured the static IP address, and performed a full system scan.
 On the router, disabled unnecessary features like AI-Cloud, reviewed all port forwarding rules, and found that the strange port 7788 had finally closed.
@@ -53,7 +53,7 @@ With security concerns addressed, decided to return to API development and adjus
 
 
 
-2025.2.15
+**2025.2.15**
 
 Give uo the directory related to the Place table in version 1.0 and moved it to a later version.
 
@@ -63,7 +63,7 @@ The difference between backref and back_populates is that the former requires de
 
 
 
-2025.2.17
+**2025.2.17**
 
 Started writing tests and setting up the necessary environment.
 I discovered an issue: while the NAS has enough memory, the CPU is way too old. This means I have to push its limited performance to the extreme. (I really miss the time when I could do whatever I wanted during my free trial on Azure.)
@@ -73,7 +73,7 @@ At the same time, I give uo that using a pipeline to build images directly on th
 
 
 
-2025.2.18
+**2025.2.18**
 
 After setting up the VM, I ran into issues right on the first update attempt—it couldn’t connect to remote servers.
 The IP and gateway configurations were correct, so I tried ping—only to realize that the mini version of the system didn’t have ping installed. I then tried apt, but it resulted in a dead loop because it couldn't reach remote servers.
@@ -91,7 +91,7 @@ Anyway, MicroK8s (the lightweight version) is now installed. I tested it with Ng
 
 
 
-February 20, 2025
+**2025.2.20**
 
 While writing tests, I found several key features related to reviews and user-fruit_list were missing, so I had to go back and fill in the gaps... I feel like my brain is running out of power 😭 not a good feeling that having to rework things halfway through testing! Lesson learned: if you underestimate the desgin part, then you'll end up with endless technical debt. But it's also frustrating when I suddenly get new ideas during development and want to make database-level changes...
 
@@ -99,7 +99,7 @@ I think learning JavaScript has become an urgent priority now. If I continue add
 
 
 
-February 23, 2025
+**2025.2.23**
 
 
 Been busy till midnight every day for the past two weeks, plus exams, kinda running on fumes. Pretty much passed out through the weekend without realizing it. Only had enough energy in the afternoon to finish writing the tests.
@@ -113,16 +113,16 @@ Watching all the tests pass in the end—what a great feeling!
 
 
 
-📌 Challenges Encountered in Backend, Frontend, and Database Development📌 
+# 📌 Challenges Encountered in Backend, Frontend, and Database Development📌 (H3)
 
 
-Database
+**Database**
 
 Since the school instructors focused on teaching how to design databases and tables, the design phase was completed fairly quickly.
 
 
 
-Backend API
+**Backend API**
 
 Also developed using the Python Flask framework, but this time integrated with a database, which led to learning about ORM and data modeling using SQLAlchemy.
 In previous school projects, the endpoint requirements were provided by the instructors, and the number of endpoints was relatively small, so there were no major difficulties.
@@ -132,7 +132,7 @@ For example, school assignments did not involve ORM or how to use relationship t
 
 
 
-Frontend
+**Frontend**
 
 The initial HTML pages were too ugly, and the "client" rejected them.
 Eventually, the "client" took matters into their own hands and wrote a CSS template.
@@ -140,6 +140,6 @@ Eventually, the "client" took matters into their own hands and wrote a CSS templ
 
 
 
-Other Issues
+**Other Issues**
 
 Got too focused on development and forgot to eat and sleep. 😅
