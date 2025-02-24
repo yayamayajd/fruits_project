@@ -18,8 +18,15 @@ def client():
             transaction = conn.begin()
             db.session.begin_nested()
 
+            db.session.execute(text('DELETE FROM fruit_reviews CASCADE'))
+            db.session.execute(text('DELETE FROM review_users CASCADE'))
+            db.session.execute(text('DELETE FROM fruits_users CASCADE'))
+            db.session.execute(text('DELETE FROM fruit_videos CASCADE'))
             db.session.execute(text('DELETE FROM fruits CASCADE'))
             db.session.execute(text('DELETE FROM users CASCADE'))
+            db.session.execute(text('DELETE FROM ways_to_get CASCADE'))
+            db.session.execute(text('DELETE FROM places CASCADE'))
+
             db.session.commit()
             db.session.execute(text("ALTER SEQUENCE fruits_id_seq RESTART WITH 1")) #reset the seriel to 1
             db.session.execute(text("ALTER SEQUENCE fruit_reviews_id_seq RESTART WITH 1"))

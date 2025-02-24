@@ -267,7 +267,7 @@ def update_review(review_id):
 
 
 #delete review
-@app.route('/fruits/<int:review_id>/delete', methods=['POST'])
+@app.route('/fruits/<int:review_id>/delete_review', methods=['POST'])
 def delete_review(review_id):
     review = db.session.get(FruitReview, review_id)  
 
