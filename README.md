@@ -1,19 +1,29 @@
 ## Fruits_project start
 
+
+
+#### Why this project?
+
+Me and my boyfriend are fruit lover. We tried a lot fruits and record experience everytime we tried a new fruit. The data was in a excel, but it become more and more complex(also looks not very nice), so I decide to make a program that contain frontend, bankend, database and deploy it on our local network. There is a NAS at home, so good that is the one. Meanwhile, I would like to use all the skill I've learn and want to be go further with my study/hobby to implement the project. For me it is a challenge to go through whole DevOps(from design to deploy to interate) process with it but I loooove challenge. 
+
+
+
 ### Plan:
 
 
-*DB*:Postgres
+*DB*:Postgres+SQLAlchemy
 
 *Backend*:Python+Flask
 
-*Frotend*: HTML+JINJA2
+*Frotend*: HTML+JINJA2+CSS(will change to JS + REACT for V2.0)
 
-*Test*: Pytest
+*Test*: Pytest(will be more for V2.0 after I learn more about test in my DevOps course)
 
-*CI/CD*:Github actions
+*CI/CD*:Github actions(Must to try the pipline for interations as well! Even though I am the one-for-all team, I'm still agile)
 
-*Deployment*: Microk8S/minikube on VM ubuntu on home NAS in local network 
+*Deploy on*: Microk8S/minikube on VM ubuntu on home NAS in local network
+
+*Others*: Docker
 
 
 
@@ -35,7 +45,7 @@ add the to_dict func to all endpint Class
 **2025.2.10**
 
 Successfully linked the comment feature on the fruit detail page to users.
-But released that the endpoint can't be RESTFUL becase I use reder template instead return json data. But to catch json I need to use JS to write fronten.
+But I realized that the endpoint can't be RESTFUL becase I use reder template instead return json data. But to catch json I need to use JS to write fronten.
 So I move to the task 'all endpints should be RESTFUL to V2.0', add study plan for JS after V1.0 deployed
 
 **2025.2.12**
@@ -57,7 +67,7 @@ With security concerns addressed, decided to return to API development and adjus
 
 Give uo the directory related to the Place table in version 1.0 and moved it to a later version.
 
-Spent a long time adjusting the relationship definitions between tables. Initially, I took a shortcut by using backref, but this resulted in countless SAWarning messages. However, as the relationships became more complex, backref was no longer sufficient.
+Spent a long time adjusting the relationship definitions between tables. first I took a shortcut by using backref, but this resulted in countless SAWarning messages. However, as the relationships became more complex, backref was no longer sufficient.
 
 The difference between backref and back_populates is that the former requires definition on only one side and automatically creates the reverse relationship, while the latter must be manually defined on both sides.
 
@@ -112,7 +122,11 @@ Watching all the tests pass in the end—what a great feeling!
 
 
 **2025.2.25**
-During the final test, I encountered a critical bug!!!! I attempting to delete a comment ended up deleting an unrelated fruit. I spent a long time searching for the issue—there was nothing wrong with the cascade settings or the relationship tables, which left me puzzled for quite a while. Eventually, I discovered that the problem was caused by the routes: the URLs for deleting fruits and comments were almost identical. After fixing that, everything finally worked as expected.
+During the final test, I found a critical bug!!!! I attempting to delete a comment ended up deleting another fruit. I spent a long time searching for the issue—there was nothing wrong with the cascade settings or the relationship tables, which left me puuuuuuuzzled for quite a while. Eventually, I found that the problem was caused by the routes: the URLs for deleting fruits and comments were almost identical. After fixing that, everything finally worked as expected.
+
+**2025.2.26**
+Fix the github secreats.Then upload the config class for comming cicd. 
+
 
 
 
@@ -123,15 +137,15 @@ During the final test, I encountered a critical bug!!!! I attempting to delete a
 
 **Database**
 
-Since the school instructors focused on teaching how to design databases and tables, the design phase was completed fairly quickly.
+I love the design part especially to figure out entity and their relation. But the difficult part is to clarify the relations on SQLAlchemy model. I arranged a document/note that the logic chain can help to wright the relationship description on ORM model, and plan to open a new branch to put it(also maybe the comming note for other steps in project) 
 
 
 
 **Backend API**
 
-Also developed using the Python Flask framework, but this time integrated with a database, which led to learning about ORM and data modeling using SQLAlchemy.
+I used to use the Python Flask framework for my Python course, but this time integrated with a database, which led to learning about ORM and data modeling using SQLAlchemy.
 In previous school projects, the endpoint requirements were provided by the instructors, and the number of endpoints was relatively small, so there were no major difficulties.
-However, this time, the project required designing endpoints, database structures, and relationship mappings based on self-defined requirements.
+But this time, the project required designing endpoints, database structures, and relationship mappings based on self-defined requirements.
 This felt like running blindfolded—I thought I had a good grasp theoretically, but in practice, I encountered many specific issues.
 For example, school assignments did not involve ORM or how to use relationship tables to integrate objects and call them based on requirements. Debugging in these areas took a significant amount of time.
 
@@ -147,4 +161,4 @@ Eventually, the "client" took matters into their own hands and wrote a CSS templ
 
 **Other Issues**
 
-Got too focused on development and forgot to eat and sleep. 😅
+Got too focused on development and forgot to eat and sleep. 😅 
