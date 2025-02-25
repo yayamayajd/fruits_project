@@ -2,12 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='format.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Fruit</title>
 </head>
 <body>
-    <h1>Add a New Fruit</h1>
+    <div id="top">
+        <h1>Fruitproject</h1>
+    </div>
+    <div id="menu">
+        <nav>
+            <a href="/">Main</a>
+            <a href="/fruits">Fruits</a>
+            <a href="/users">Users</a> 
+            
+        </nav>
+
+    </div>
+    <h2>Add a New Fruit</h2>
     <form action="/fruits/add" method="POST">
+        <p class="fruitdetail" class="addfruit">
         <label for="official_name">Official Name (required):</label><br>
         <input type="text" id="official_name" name="official_name" required><br><br>
 
@@ -30,6 +44,8 @@
         <input type="date" id="tried_date" name="tried_date"><br><br>
 
         <button type="submit">Add Fruit</button>
+        </p>
     </form>
+    <a href="/fruits">Back to List</a>
 </body>
 </html>

@@ -1,7 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 
 
-#use models.py to map db and python variable
+#use models.py to map db and python object
 
 db = SQLAlchemy()
 
@@ -27,8 +27,9 @@ class Fruit(db.Model):
     place = db.relationship("Place", backref="fruits")
     way = db.relationship("WayToGet", backref="fruits")
     reviews = db.relationship("FruitReview", backref="fruit", cascade="all, delete-orphan") #once delete the fruit, delete all follow info
-    users = db.relationship("FruitUser", backref="fruit", cascade="all, delete-orphan")
     videos = db.relationship("FruitVideo", backref="fruit", cascade="all, delete-orphan")
+    users = db.relationship("User", secondary="fruits_users", back_populates="fruits_eaten_by_user")
+
 
     def to_dict(self):
         return {
@@ -83,6 +84,7 @@ class FruitReview(db.Model):
     experience_score = db.Column(db.Integer, nullable=False)
     review = db.Column(db.Text, nullable=True)
 
+    user_associations = db.relationship("ReviewUser", back_populates="fruit_review", cascade="all, delete-orphan")
 
 
     def to_dict(self):
@@ -94,12 +96,22 @@ class FruitReview(db.Model):
             "review": self.review
         }
 
+
+
+
 #users table
 class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
+
+    reviews = db.relationship('ReviewUser', back_populates='associated_user', cascade='all, delete-orphan')
+    fruits_eaten_by_user = db.relationship("Fruit", secondary="fruits_users", back_populates="users")
+
+
+
+
 
     def to_dict(self):
         return {
@@ -114,6 +126,32 @@ class FruitUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fruit_id = db.Column(db.Integer, db.ForeignKey('fruits.id', ondelete="CASCADE"), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+
+
+
+
+
+
+
+
+
+
+
+class ReviewUser(db.Model):
+    __tablename__ = 'review_users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    review_id = db.Column(db.Integer, db.ForeignKey('fruit_reviews.id', ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), nullable=False)
+
+
+    fruit_review = db.relationship("FruitReview", back_populates="user_associations")
+    associated_user = db.relationship("User", back_populates="reviews") 
+
+
+
+
+
 
 #video table
 class FruitVideo(db.Model):

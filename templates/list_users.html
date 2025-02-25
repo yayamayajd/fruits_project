@@ -1,23 +1,39 @@
-<!-- list_users.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='format.css') }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Users List</title>
 </head>
 <body>
-    <h1>Users List</h1>
+    <div id="top">
+        <h1>Fruitproject</h1>
+    </div>
+    <div id="menu">
+        <nav>
+            <a href="/">Main</a>
+            <a href="/fruits">Fruits</a>
+            <a href="/users">Users</a> 
+
+            
+        </nav>
+
+    </div>
+    <h2>Users List</h2>
     <form action="/users" method="post">
         <input type="text" name="name" placeholder="Enter User Name" required>
         <button type="submit">Add User</button>
     </form>
-    <ul>
+    <ul class="users">
         {% for user in users %}
             <li>
                 {{ user.name }}
                 <form action="/users/{{ user.id }}/delete" method="post" style="display:inline;">
-                    <button type="submit">Delete</button>
+                    <a href="/user/{{user.id}}/user_fruits_list">fruit list</a>
+                    <button type="submit" onclick="return confirm('Are you sure?');">Delete</button>
+                    
                 </form>
             </li>
         {% endfor %}

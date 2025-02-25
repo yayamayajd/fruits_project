@@ -1,0 +1,24 @@
+@charset "utf-8";
+/* CSS Document */
+
+p { font-family:Arial, Verdana, Helvetica; font-size:12px; }
+a { font-family:Arial, Verdana, Helvetica; font-size:12px; }
+h1 {font-family:Arial, Verdana, Helvetica;font-size:35px; color: darkgreen; /*67c0d3*/}
+h2 {font-family:Arial, Verdana, Helvetica; font-size:22px;}
+h3 {font-size:11px; font-family: Arial, Helvetica, Verdana;font-size:18px;}
+strong {font-family:Arial, Verdana, Helvetica; font-size:14px; color: #2b3c46;}
+
+
+a:link {color:#3d5766;}
+a:visited { color:#3d5664;}
+a:hover { color:#8aaab9;}
+
+#top {background-color: rgb(255, 255, 255); width:767px; height:50px;}
+#menu {background-color: rgb(249, 249, 249);}
+#main {background-color: rgb(255, 255, 255);}
+
+.fruitdetail {font-family:Arial, Verdana, Helvetica; font-size:14px; }
+.addfruit {font-family:Arial, Verdana, Helvetica; font-size:14px; }
+.fruitlist {}
+.users {font-family:Arial, Verdana, Helvetica; font-size:14px; }
+.review {font-family:Arial, Verdana, Helvetica; font-size:12px; }

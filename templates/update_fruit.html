@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='format.css') }}">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ fruit.official_name }}</title>
+</head>
+<body>
+    <div id="top">
+        <h1>Fruitproject</h1>
+    </div>
+    <div id="menu">
+        <nav>
+            <a href="/">Main</a>
+            <a href="/fruits">Fruits</a>
+            <a href="/users">Users</a> 
+
+            
+        </nav>
+
+    </div>
+    <h2>Update Fruit Information</h2>
+    <form class="fruitdetail" action="/fruits/{{ fruit.id }}/update" method="POST">
+        <label for="official_name">Official Name:</label><br>
+        <input type="text" id="official_name" name="official_name" value="{{ fruit.official_name }}" required><br><br>
+
+        <label for="scientific_name">Scientific Name:</label><br>
+        <input type="text" id="scientific_name" name="scientific_name" value="{{ fruit.scientific_name }}"><br><br>
+
+        <label for="image_url">Image URL:</label><br>
+        <input type="url" id="image_url" name="image_url" value="{{ fruit.image_url }}"><br><br>
+
+        <label for="tried_date">Tried Date:</label><br>
+        <input type="date" id="tried_date" name="tried_date" value="{{ fruit.tried_date }}"><br><br>
+
+        <label for="cultivar">Cultivar:</label><br>
+        <input type="text" id="cultivar" name="cultivar" value="{{ fruit.cultivar }}"><br><br>
+
+        <label for="special_condition">Special Condition:</label><br>
+        <input type="text" id="special_condition" name="special_condition" value="{{ fruit.special_condition }}"><br><br>
+
+        <label for="other_links">Other Links:</label><br>
+        <input type="url" id="other_links" name="other_links" value="{{ fruit.other_links }}"><br><br>
+
+        <button type="submit">Update Fruit</button>
+    </form>
+    <a href="/fruits/{{ fruit.id }}">Back to fruit's details</a>
+</body>
+</html>

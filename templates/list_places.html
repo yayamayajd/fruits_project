@@ -1,13 +1,27 @@
-<!-- list_places.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='format.css') }}">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Places List</title>
 </head>
 <body>
-    <h1>Places List</h1>
+    <div id="top">
+        <h1>Fruitproject</h1>
+    </div>
+    <div id="menu">
+        <nav>
+            <a href="/">Main</a>
+            <a href="/fruits">Fruits</a>
+            <a href="/users">Users</a> 
+            <a href="/places">Places</a>
+            
+        </nav>
+
+    </div>
+    <h2>Places List</h2>
     <form action="/places/add" method="post">
         <input type="text" name="place_name" placeholder="Enter Place Name" required>
         <input type="text" name="country" placeholder="Enter Country" required>

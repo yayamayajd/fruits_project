@@ -2,19 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='format.css') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fruit Project</title>
 </head>
 <body>
-    <h1>Welcome to the Fruit Project</h1>
+    <div id="top">
+        <h1>Fruitproject</h1>
+    </div>
+    <div id="menu">
+        <nav>
+            <a href="/">Main</a>
+            <a href="/fruits">Fruits</a>
+            <a href="/users">Users</a> 
+            
+        </nav>
+
+    </div>
+    <div id="main">
+    <h2>Welcome to the Fruit Project</h2>
     <p>We are the fruits lover who want to arrange our fruits experience!</p>
 
-    <nav>
-        <ul>
-            <li><a href="/fruits">Fruits</a></li>
-            <li><a href="/users">Users</a></li>
-            <li><a href="/places">Places</a></li>
-        </ul>
-    </nav>
+    <form action="/fruits" method="get">
+        <input type="text" name="search_key" placeholder="Search fruits">
+        <button type="submit">Search</button>
+    </form>
+    </div>
 </body>
 </html>

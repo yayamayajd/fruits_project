@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='format.css') }}">
+    <title>{{ user.name }}'s Fruits</title>
+</head>
+<body>
+        <div id="top">
+            <h1>Fruitproject</h1>
+        </div>
+        <div id="menu">
+            <nav>
+                <a href="/">Main</a>
+                <a href="/fruits">Fruits</a>
+                <a href="/users">Users</a> 
+
+                
+            </nav>
+    
+        </div>
+        <h2>Fruits Tried by {{ user.name }}</h2>
+
+        {% if fruits %}
+            <p><strong>Total Fruits Tried: {{ fruits|length }}</strong></p>  
+            <ul>
+                {% for fruit in fruits %}
+                    <li>
+                        <strong>{{ fruit.official_name }}</strong>
+                        <a href="{{ url_for('show_fruit', id=fruit.id) }}">（details）</a>
+                        <form action="{{ url_for('remove_fruit_from_user', id=user.id, fruit_id=fruit.id) }}" method="post" style="display:inline;">
+                            <button type="submit" onclick="return confirm('Are you sure you want to remove this fruit?');">Remove</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        
+    <a href="{{ url_for('show_user') }}">Back to Users</a>
+</body>
+</html>
