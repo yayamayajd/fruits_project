@@ -4,7 +4,9 @@
 
 #### Why this project?
 
-Me and my boyfriend are fruit lover. We tried a lot fruits and record experience everytime we tried a new fruit. The data was in a excel, but it become more and more complex(also looks not very nice), so I decide to make a program that contain frontend, bankend, database and deploy it on our local network. There is a NAS at home, so good that is the one. Meanwhile, I would like to use all the skill I've learn and want to be go further with my study/hobby to implement the project. For me it is a challenge to go through whole DevOps(from design to deploy to interate) process with it but I loooove challenge. 
+My boyfriend and I are fruit lovers. We’ve tried a lot of fruits and recorded our experiences every time we tried a new one. The data was stored in an Excel file, but it became more and more complex (and didn’t look very nice), so I decided to create a program that includes a frontend, backend, database, and deploy it on our local network. Luckily, we have a NAS at home, which is perfect for the job.
+
+Meanwhile, I want to apply all the skills I’ve learned and take my studies and hobbies to the next level by implementing this project. For me, it's a challenge to go through the entire DevOps process—from design to deployment and iteration—but I loooove challenges!
 
 
 
