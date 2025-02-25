@@ -111,6 +111,11 @@ Got stuck on review_update for a bit. Couldn’t figure out why testing with num
 Watching all the tests pass in the end—what a great feeling!
 
 
+**2025.2.25**
+During the final test, I encountered a critical bug!!!! I attempting to delete a comment ended up deleting an unrelated fruit. I spent a long time searching for the issue—there was nothing wrong with the cascade settings or the relationship tables, which left me puzzled for quite a while. Eventually, I discovered that the problem was caused by the routes: the URLs for deleting fruits and comments were almost identical. After fixing that, everything finally worked as expected.
+
+
+
 
 
 ### 📌 Challenges Encountered in Backend, Frontend, and Database Development📌 
