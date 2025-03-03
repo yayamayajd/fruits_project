@@ -1,0 +1,13 @@
+name: Test Runner-Docker
+
+on:
+  push:
+    branches:
+      - jiadai_cicd
+
+jobs:
+  test-docker:
+    runs-on: self-hosted
+    steps:
+      - name: Docker-test
+        run: docker --version
