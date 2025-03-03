@@ -1,0 +1,45 @@
+name: cicd pipline Fruits-Project
+
+on:
+  push:
+    branches:
+      - main
+
+# most of the actions step:
+# 1 checkout repo, 2 setup running env, 3 install dependencies (from requirements.txt)
+# 4 run test, 5 build, 6 push the built image, 7 deploy
+jobs:
+  pipline-biuld-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.13.2
+
+      - name: install dependencies
+        run: pip install -r requirements.txt
+
+      - name: run tests
+        run: pytest tests/
+
+      - name: login docker registry
+        env: 
+          DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          echo $DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
+
+      - name: build docker image
+        run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest .
+
+      - name: push the docker image to ubuntu-on-NAS
+        run: docker push ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
+
+      - name: deploy to K8S
+        uses: 
