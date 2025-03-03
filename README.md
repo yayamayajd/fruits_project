@@ -129,6 +129,10 @@ During the final test, I found a critical bug!!!! I attempting to delete a comme
 **2025.2.26**
 Fix the github secreats.Then upload the config class for comming cicd. 
 
+**2025.03.03**
+I wrote a yml to tested the runner, then merge to main. Gonna do the cicd based on change of main. I also created the dockerfile and requirements.txt. 
+On my way to write the cicd yml
+
 
 
 
