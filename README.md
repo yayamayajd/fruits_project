@@ -130,8 +130,10 @@ During the final test, I found a critical bug!!!! I attempting to delete a comme
 Fix the github secreats.Then upload the config class for comming cicd. 
 
 **2025.03.03**
+I went to a ski trip in Romania last week! It was amazing! This was my 2nd time to ski and I finished(fall 5 times) a blue slope hehe! 
 I wrote a yml to tested the runner, then merge to main. Gonna do the cicd based on change of main. I also created the dockerfile and requirements.txt. 
-On my way to write the cicd yml
+On my way to write the cicd yml。
+P.S learn a skill: to avoid trigger pipline with a commit(like update readme), use [skip ci] in commit message
 
 
 
