@@ -41,5 +41,5 @@ jobs:
       - name: push the docker image to ubuntu-on-NAS
         run: docker push ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
 
-      - name: deploy to K8S
-        uses: 
+#      - name: deploy to K8S
+#        uses: 
