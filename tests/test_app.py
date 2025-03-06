@@ -1,7 +1,7 @@
 import pytest
-from app import app, db
+from app.app import app, db
 from config import Config
-from models import Fruit, User, FruitReview,ReviewUser, FruitUser
+from app.models import Fruit, User, FruitReview,ReviewUser, FruitUser
 from sqlalchemy import text  
 
 
