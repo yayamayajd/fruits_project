@@ -124,16 +124,23 @@ Watching all the tests pass in the end—what a great feeling!
 
 
 **2025.2.25**
+
 During the final test, I found a critical bug!!!! I attempting to delete a comment ended up deleting another fruit. I spent a long time searching for the issue—there was nothing wrong with the cascade settings or the relationship tables, which left me puuuuuuuzzled for quite a while. Eventually, I found that the problem was caused by the routes: the URLs for deleting fruits and comments were almost identical. After fixing that, everything finally worked as expected.
 
 **2025.2.26**
+
 Fix the github secreats.Then upload the config class for comming cicd. 
 
 **2025.03.03**
+
 I went to a ski trip in Romania last week! It was amazing! This was my 2nd time to ski and I finished(fall 5 times) a blue slope hehe! 
 I wrote a yml to tested the runner, then merge to main. Gonna do the cicd based on change of main. I also created the dockerfile and requirements.txt. 
 On my way to write the cicd yml。
 P.S learn a skill: to avoid trigger pipline with a commit(like update readme), use [skip ci] in commit message
+
+**2025.03.05**
+
+The day systemeticly study K8s. realized a question which I wondered long time: why K8S use ymal. APIserver, its you! Not because yml is easy to read, also because yml is superset of json and APIserver take REST request via HTTP from kubectl. Wonder why I didn't think of it before lol
 
 
 
