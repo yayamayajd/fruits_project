@@ -28,7 +28,7 @@ jobs:
 
       - name: install dependencies
         run: pip install -r requirements.txt
-        
+
       - name: Load DATABASE_URL for testing
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL_TEST }}" >> $GITHUB_ENV
 
@@ -57,7 +57,7 @@ jobs:
           UBUNTU_SSH_USER: ${{ secrets.UBUNTU_USER }}
           UBUNTU_SSH_KEY: ${{ secrets.UBUNTU_ON_NAS_SSH_PRIVATE_KEY }}
         run: |
-          printf "%s" "$UBUNTU_SSH_KEY" > ssh_key 
+          echo "$UBUNTU_SSH_KEY" | base64 --decode > ssh_key 
           chmod 400 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key $UBUNTU_SSH_USER@$UBUNTU_SSH_HOST << 'EOF'
             set -e
