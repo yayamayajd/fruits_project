@@ -9,6 +9,12 @@ app.config.from_object(Config)
 db.init_app(app)  #init DB for Flask
 
 
+
+@app.route("/health")
+def health_check():
+    return jsonify({"status":"health"}),200  #for k8s health check probe
+
+
 #index page show the introuduction
 @app.route('/')
 def index():
