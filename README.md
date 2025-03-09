@@ -143,6 +143,16 @@ P.S learn a skill: to avoid trigger pipline with a commit(like update readme), u
 The day systemeticly study K8s. realized a question which I wondered long time: why K8S use ymal. APIserver, its you! Not because yml is easy to read, also because yml is superset of json and APIserver take REST request via HTTP from kubectl. Wonder why I didn't think of it before lol
 
 
+**2025.03.07**
+
+Created the necessary Kubernetes secrets in k8s to avoid exposing sensitive information due to the CI/CD pipeline running.
+
+For DB deployment, I faced a choice: if I use k8s to creat the statefulset for DB deployment, which could affect alot of the already limited resources on NAS. But in the end, I decided to give it a try with strict resource limitations.
+
+**2025.03.09**
+
+Completed the necessary YAML files. I decided to first test the deployment of flask and Postgre. Once they are working, I will proceed with setting up Ingress for domain access.
+
 
 
 
