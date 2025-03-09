@@ -58,11 +58,11 @@ jobs:
           UBUNTU_SSH_KEY: ${{ secrets.UBUNTU_ON_NAS_SSH_PRIVATE_KEY }}
         run: |
           printf "%s\n" "$UBUNTU_SSH_KEY" > ssh_key 
-          chmod 400 ssh_key
+          chmod 600 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key $UBUNTU_SSH_USER@$UBUNTU_SSH_HOST << 'EOF'
             echo "Connected!"
             set -e
-            cd /home/$UBUNTU_SSH_USER/fruit/fruits_project
+            cd /home/$UBUNTU_SSH_USER/fruit/fruits_project || exit 1
             git pull origin main
             microk8s kubectl apply -f kubernetes/postgres-service.yml
             microk8s kubectl apply -f kubernetes/postgres-statefulset.yml
