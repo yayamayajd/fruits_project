@@ -22,7 +22,7 @@ jobs:
           python-version: 3.13.2
           cache: pip
           architecture: arm64
-          install-dir: /Users/runner/.python-hosted
+
 
 
 
