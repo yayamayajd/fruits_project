@@ -62,7 +62,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ssh_key $UBUNTU_SSH_USER@$UBUNTU_SSH_HOST << 'EOF'
             echo "Connected!"
             set -e
-            cd /home/$UBUNTU_SSH_USER/fruit/fruits_project || exit 1
+            cd /home/${{ secrets.UBUNTU_USER }}/fruit/fruits_project || exit 1
             git pull origin main
             microk8s kubectl apply -f kubernetes/postgres-service.yml
             microk8s kubectl apply -f kubernetes/postgres-statefulset.yml
