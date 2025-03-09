@@ -50,6 +50,7 @@ jobs:
           printf "%s" "$UBUNTU_SSH_KEY" > ssh_key 
           chmod 400 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key $UBUNTU_SSH_USER@$UBUNTU_SSH_HOST << 'EOF'
+            set -e
             cd /home/$UBUNTU_SSH_USER/fruit/fruits_project
             git pull origin main
             microk8s kubectl apply -f kubernetes/postgres-service.yml
