@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16
+        ports: 
+        - containerPort: 5432
+        env: #created in kubernetes secret and user the anv here
+        - name: POSTGRES_DB
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_DB
+
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_USER
+
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: POSTGRES_PASSWORD
+
+        resources: #need to limete the resource use
+          requests: 
+            cpu: "100m"
+            memory: "128Mi"
+          limits: 
+            cpu: "300m"
+            memory: "256Mi"
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data #default path
+
+  volumeClaimTemplates: 
+  - metadata:
+      name: postgres-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 2Gi

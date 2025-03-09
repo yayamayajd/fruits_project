@@ -1,0 +1,57 @@
+# the app is a statusless application so its for deployment
+
+apiVersion: apps/v1 #k(alians_name) api-resources | grep deployment comfirmd version
+kind: Deployment #type of the resources
+metadata: #metadata of the deployment, to describe the deplyment  
+  name: flask-app_deployment
+spec:
+  selector:
+    matchLabels:
+      app: flask-fruit #this deployment only handle the pods with this label
+  replicas: 2
+  template:
+    metadata:
+      labels: #tthe label of this pod, must match the matchLablels
+        app: flask-fruit
+        version: v1
+
+    spec:
+      containers: #description of the contaniners in the pod
+        - name: flask-fruit-container
+          image: ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest #pull the image which built from cicd
+          ports: 
+          - containerPort: 5000
+          env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: flask-secrets
+                key: DATABASE_URL
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "300m"
+              memory: "512Mi"
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+
+
+
+
+
+
+
+
