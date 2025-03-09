@@ -28,9 +28,14 @@ jobs:
 
       - name: install dependencies
         run: pip install -r requirements.txt
+        
+      - name: Load DATABASE_URL for testing
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL_TEST }}" >> $GITHUB_ENV
+
 
       - name: run tests
         run: pytest tests/
+
 
       - name: login docker registry
         env: #github secrets
