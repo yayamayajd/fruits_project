@@ -57,9 +57,10 @@ jobs:
           UBUNTU_SSH_USER: ${{ secrets.UBUNTU_USER }}
           UBUNTU_SSH_KEY: ${{ secrets.UBUNTU_ON_NAS_SSH_PRIVATE_KEY }}
         run: |
-          echo "$UBUNTU_SSH_KEY" | base64 --decode > ssh_key 
+          printf "%s\n" "$UBUNTU_SSH_KEY" > ssh_key 
           chmod 400 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key $UBUNTU_SSH_USER@$UBUNTU_SSH_HOST << 'EOF'
+            echo "Connected!"
             set -e
             cd /home/$UBUNTU_SSH_USER/fruit/fruits_project
             git pull origin main
