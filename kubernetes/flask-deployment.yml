@@ -3,7 +3,7 @@
 apiVersion: apps/v1 #k(alians_name) api-resources | grep deployment comfirmd version
 kind: Deployment #type of the resources
 metadata: #metadata of the deployment, to describe the deplyment  
-  name: flask-app_deployment
+  name: flask-app-deployment
 spec:
   selector:
     matchLabels:
