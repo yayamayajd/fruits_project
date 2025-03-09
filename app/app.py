@@ -3,7 +3,7 @@ from app.models import db, Fruit, FruitReview, FruitUser,User,Place,ReviewUser
 from sqlalchemy.exc import IntegrityError
 from config import Config
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="../templates",static_folder="../static")
 
 app.config.from_object(Config)
 db.init_app(app)  #init DB for Flask
