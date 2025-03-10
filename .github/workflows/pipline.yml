@@ -59,6 +59,7 @@ jobs:
 
 
 
+
       - name: deploy postgres&APP to K8S
         env: #use the github secrets
           UBUNTU_SSH_HOST: ${{ secrets.UBUNTU_IP }}
