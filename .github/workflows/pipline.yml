@@ -56,8 +56,8 @@ jobs:
 
       - name: push the docker image to ubuntu-on-NAS
         run: |
-          docker push ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
-          docker push ${{ secrets.DOCKER_REGISTRY }}/postgres:16
+          docker push --no-cache ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
+          docker push --no-cache ${{ secrets.DOCKER_REGISTRY }}/postgres:16
 
 
 
