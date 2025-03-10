@@ -152,7 +152,7 @@ For DB deployment, I faced a choice: if I use k8s to creat the statefulset for D
 **2025.03.09**
 
 Completed the necessary YAML files. I decided to first test the deployment of flask and Postgre. Once they are working, I will proceed with setting up Ingress for domain access.
-finally I can test my pipeline!
+finally I can test my pipeline!!
 
 
 
