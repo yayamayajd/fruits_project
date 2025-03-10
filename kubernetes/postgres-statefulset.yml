@@ -14,12 +14,20 @@ spec:
         app: postgres
 
     spec:
+      imagePullSecrets:
+      - name: registry-secret
       containers:
       - name: postgres
-        image: postgres:16
+        image: "$(DOCKER_REGISTRY)/postgres:16"
+        imagePullPolicy: Always
         ports: 
         - containerPort: 5432
         env: #created in kubernetes secret and user the anv here
+        - name: DOCKER_REGISTRY
+          valueFrom:
+            secretKeyRef:
+              name: registry-config
+              key: DOCKER_REGISTRY
         - name: POSTGRES_DB
           valueFrom:
             secretKeyRef:

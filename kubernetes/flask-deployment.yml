@@ -21,6 +21,7 @@ spec:
       containers: #description of the contaniners in the pod
         - name: flask-fruit-container
           image: $(DOCKER_REGISTRY)/fruits-project:latest #pull the image which built from cicd
+          imagePullPolicy: Always
           ports: 
           - containerPort: 5000
           env:
