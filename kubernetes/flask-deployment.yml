@@ -16,9 +16,11 @@ spec:
         version: v1
 
     spec:
+      imagePullSecrets:
+      - name: registry-secret
       containers: #description of the contaniners in the pod
         - name: flask-fruit-container
-          image: ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest #pull the image which built from cicd
+          image: $(DOCKER_REGISTRY)/fruits-project:latest #pull the image which built from cicd
           ports: 
           - containerPort: 5000
           env:
@@ -27,6 +29,11 @@ spec:
               secretKeyRef:
                 name: flask-secrets
                 key: DATABASE_URL
+          - name: DOCKER_REGISTRY
+            valueFrom:
+              secretKeyRef:
+                name: docker-registry-config
+                key: DOCKER_REGISTRY
           resources:
             requests:
               cpu: "100m"

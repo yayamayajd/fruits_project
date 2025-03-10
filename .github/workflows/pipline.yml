@@ -51,6 +51,11 @@ jobs:
       - name: push the docker image to ubuntu-on-NAS
         run: docker push ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
 
+      - name: Replace DOCKER_REGISTRY in Deployment YAML
+        run: |
+          sed -i 's|$(DOCKER_REGISTRY)|${{ secrets.DOCKER_REGISTRY }}|g' kubernetes/flask-deployment.yml
+
+
       - name: deploy postgres&APP to K8S
         env: #use the github secrets
           UBUNTU_SSH_HOST: ${{ secrets.UBUNTU_IP }}
