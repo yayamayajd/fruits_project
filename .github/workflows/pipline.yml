@@ -46,7 +46,7 @@ jobs:
           echo $DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
 
       - name: build docker image
-        run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest .
+        run: docker build --no-cache -t ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest .
 
       - name: Pull PostgreSQL image from Docker Hub and push to private registry
         run: |
@@ -56,8 +56,8 @@ jobs:
 
       - name: push the docker image to ubuntu-on-NAS
         run: |
-          docker push --no-cache ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
-          docker push --no-cache ${{ secrets.DOCKER_REGISTRY }}/postgres:16
+          docker push ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
+          docker push ${{ secrets.DOCKER_REGISTRY }}/postgres:16
 
 
 
