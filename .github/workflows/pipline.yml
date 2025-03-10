@@ -48,8 +48,16 @@ jobs:
       - name: build docker image
         run: docker build -t ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest .
 
+      - name: Pull PostgreSQL image from Docker Hub and push to private registry
+        run: |
+          docker pull postgres:16
+          docker tag postgres:16 ${{ secrets.DOCKER_REGISTRY }}/postgres:16
+
+
       - name: push the docker image to ubuntu-on-NAS
-        run: docker push ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
+        run: |
+          docker push ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
+          docker push ${{ secrets.DOCKER_REGISTRY }}/postgres:16
 
 
 
