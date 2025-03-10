@@ -18,7 +18,7 @@ spec:
       - name: registry-secret
       containers:
       - name: postgres
-        image: "{{ DOCKER_REGISTRY }}/postgres:16"
+        image: "postgres"
         imagePullPolicy: Always
         ports: 
         - containerPort: 5432
