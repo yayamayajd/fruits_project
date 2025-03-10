@@ -54,13 +54,25 @@ jobs:
       - name: Replace DOCKER_REGISTRY in Deployment YAML
         run: |
           export DOCKER_REGISTRY=${{ secrets.DOCKER_REGISTRY }}
-          sed -i "s|\{{ DOCKER_REGISTRY }}|$DOCKER_REGISTRY|g" kubernetes/flask-deployment.yml
+          if [[ "$OSTYPE" == "darwin"* ]]; then
+            sed -i "" "s|{{ DOCKER_REGISTRY }}|$DOCKER_REGISTRY|g" kubernetes/flask-deployment.yml
+          else
+            sed -i "s|{{ DOCKER_REGISTRY }}|$DOCKER_REGISTRY|g" kubernetes/flask-deployment.yml
+          fi
+
 
 
       - name: Replace DOCKER_REGISTRY in PostgreSQL StatefulSet
         run: |
           export DOCKER_REGISTRY=${{ secrets.DOCKER_REGISTRY }}
-          sed -i "s|\{{ DOCKER_REGISTRY }}|$DOCKER_REGISTRY|g" kubernetes/postgres-statefulset.yml
+          if [[ "$OSTYPE" == "darwin"* ]]; then
+            sed -i "" "s|{{ DOCKER_REGISTRY }}|$DOCKER_REGISTRY|g" kubernetes/postgres-statefulset.yml
+          else
+            sed -i "s|{{ DOCKER_REGISTRY }}|$DOCKER_REGISTRY|g" kubernetes/postgres-statefulset.yml
+          fi
+
+
+
 
 
 
