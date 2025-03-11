@@ -23,7 +23,7 @@ Meanwhile, I want to apply all the skills I’ve learned and take my studies and
 
 *CI/CD*:Github actions(Must to try the pipline for interations as well! Even though I am the one-for-all team, I'm still agile)
 
-*Deploy on*: Microk8S/minikube on VM ubuntu on home NAS in local network
+*Deploy on*: Microk8S/minikube(The NAS couldn't hold it, so I decide to switch to k3s) on VM ubuntu on home NAS in local network
 
 *Others*: Docker
 
@@ -153,6 +153,39 @@ For DB deployment, I faced a choice: if I use k8s to creat the statefulset for D
 
 Completed the necessary YAML files. I decided to first test the deployment of flask and Postgre. Once they are working, I will proceed with setting up Ingress for domain access.
 finally I can test my pipeline!!
+
+
+**2025.03.10**
+
+
+The hell of errors!!!!! lol I think I encountered almost every possible Kubernetes deployment error.
+
+First, to avoid exposing sensitive information in the CI/CD process, I used GitHub Secrets and Kubernetes Secrets. However, since I tagged my images using an IP address, I initially replaced the IP in the image name using GitHub Secrets. But Kubernetes couldn’t resolve it.
+
+So, I switched to using Kubernetes Secrets and set them as environment variables. But even then, Kubernetes still couldn’t resolve its own secrets in the image name! Then I tried dynamically replacing the image name within the CI/CD pipeline… Finally, Kubernetes could fully parse the image name. But this was just the beginning…
+
+Kubernetes crashed. I had to reinstall it to continue. lol
+
+By default, Kubernetes doesn’t trust private registries and only pulls images over HTTPS. But since I pushed my images to a private registry after building them on my development laptop my CI/CD pipeline kept failing to pull the images. It just never worked.
+
+The BackOffError nearly broke me. I modified the .toml file, explicitly declared HTTP in both the .toml and my Docker settings, and managed to pull images from Docker Hub. But after countless stop/start attempts with MicroK8s, it still couldn’t pull from my private registry.
+
+So, sometimes CI/CD looked successful, but the pods couldn’t actually start. In the end, I had no choice but to use a complicated solution after hard tring google: using a self-signed certificate. I ended up going back to HTTPS, but at least I could finally pull images!
+
+But I was happy too soon…
+
+Kubernetes kept crashing. I couldn’t even open the logs. lol
+Restarted, crashed again, and again, and again, again... (Sounds like the BackOffError always with a long tailed echo lol)
+
+**2025.03.11**
+
+I feel like an East Asian parent forcing my underpowered little kid to win an Olympic gold medal.
+
+In the end, I had to face reality: My dear NAS is already old and should retire. MicroK8s is just too much for it.
+
+I think I’ll take a step back and try switching to K3s instead.
+
+
 
 
 
