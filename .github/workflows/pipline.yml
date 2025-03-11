@@ -78,12 +78,12 @@ jobs:
             set -e
             cd /home/${{ secrets.UBUNTU_USER }}/fruit/fruits_project || exit 1
             git pull origin main
-            microk8s kubectl apply -f kubernetes/postgres-service.yml
-            microk8s kubectl apply -f kubernetes/postgres-statefulset.yml
-            microk8s kubectl set image statefulset/postgres postgres=${{ secrets.DOCKER_REGISTRY }}/postgres:16
-            microk8s kubectl apply -f kubernetes/flask-service.yml
-            microk8s kubectl apply -f kubernetes/flask-deployment.yml
-            microk8s kubectl set image deployment/flask-app-deployment flask-fruit-container=${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
+            kubectl apply -f kubernetes/postgres-service.yml
+            kubectl apply -f kubernetes/postgres-statefulset.yml
+            kubectl set image statefulset/postgres postgres=${{ secrets.DOCKER_REGISTRY }}/postgres:16
+            kubectl apply -f kubernetes/flask-service.yml
+            kubectl apply -f kubernetes/flask-deployment.yml
+            kubectl set image deployment/flask-app-deployment flask-fruit-container=${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
           EOF
           rm -f ssh_key
 

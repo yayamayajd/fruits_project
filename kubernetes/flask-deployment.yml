@@ -16,8 +16,6 @@ spec:
         version: v1
 
     spec:
-      imagePullSecrets:
-      - name: registry-secret
       containers: #description of the contaniners in the pod
         - name: flask-fruit-container
           image: "flask-fruit-container" #pull the image which built from cicd
