@@ -16,6 +16,8 @@ spec:
         version: v1
 
     spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
       imagePullSecrets:
       - name: registry-secret
       containers: #description of the contaniners in the pod
