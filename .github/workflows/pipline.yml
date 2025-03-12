@@ -19,7 +19,7 @@ jobs:
       - name: setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: 3.13.2
+          python-version: 3.12
           cache: pip
           architecture: arm64
 
@@ -37,17 +37,18 @@ jobs:
         run: pytest tests/
 
 
-
-
-
       - name: login docker registry
         env:  #github secrets
           DOCKER_REGISTRY: ${{ secrets.DOCKER_REGISTRY }}
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          
 
         run: |
+          export DOCKER_CLI_ACI=0
           echo $DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
+        
+        
 
 
       - name: build docker image
