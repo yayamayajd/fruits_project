@@ -53,11 +53,12 @@ jobs:
 
       - name: build docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest . 
+          docker buildx create --use 
+          docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest --push . 
 
       - name: Pull PostgreSQL image from Docker Hub and push to private registry
         run: |
-          docker pull postgres:16
+          docker pull --platform linux/amd64 postgres:16
           docker tag postgres:16 ${{ secrets.DOCKER_REGISTRY }}/postgres:16
 
 
