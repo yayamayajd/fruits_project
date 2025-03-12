@@ -53,8 +53,7 @@ jobs:
 
       - name: build docker image
         run: | 
-          docker buildx create --use
-          docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest --push . 
+          docker build --platform linux/amd64 -t ${{ secrets.DOCKER_REGISTRY }}/fruits-project:v1.0 --push . 
 
       - name: Pull PostgreSQL image from Docker Hub and push to private registry
         run: |
@@ -94,7 +93,7 @@ jobs:
 
             kubectl apply -f kubernetes/flask-service.yml
             kubectl apply -f kubernetes/flask-deployment.yml
-            kubectl set image deployment/flask-app-deployment flask-fruit=${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
+            kubectl set image deployment/flask-app-deployment flask-fruit=${{ secrets.DOCKER_REGISTRY }}/fruits-project:v1.0
             kubectl rollout status deployment/flask-app-deployment
           EOF
           rm -f ssh_key
