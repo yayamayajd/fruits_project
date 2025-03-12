@@ -36,10 +36,11 @@ jobs:
       - name: run tests
         run: pytest tests/
 
-      - name: Setup Docker credentials storage
+      - name: Disable Docker credential storage
         run: |
           mkdir -p ~/.docker
-          echo '{ "credsStore": "none" }' > ~/.docker/config.json
+          echo '{ "credsStore": "none", "auths": {} }' > ~/.docker/config.json
+
 
 
       - name: login docker registry
