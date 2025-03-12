@@ -88,12 +88,10 @@ jobs:
             kubectl apply -f kubernetes/postgres-service.yml
             kubectl apply -f kubernetes/postgres-statefulset.yml
 
-            kubectl set image statefulset/postgres postgres=${{ secrets.DOCKER_REGISTRY }}/postgres:16
             kubectl rollout status statefulset/postgres
 
             kubectl apply -f kubernetes/flask-service.yml
             kubectl apply -f kubernetes/flask-deployment.yml
-            kubectl set image deployment/flask-app-deployment flask-fruit=${{ secrets.DOCKER_REGISTRY }}/fruits-project:v1.0
             kubectl rollout status deployment/flask-app-deployment
           EOF
           rm -f ssh_key

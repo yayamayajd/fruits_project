@@ -20,7 +20,7 @@ spec:
       - name: registry-secret
       containers:
       - name: postgres
-        image: postgres
+        image: 192.168.49.70:5000/postgres:16
         imagePullPolicy: IfNotPresent
         ports: 
         - containerPort: 5432

@@ -22,7 +22,7 @@ spec:
       - name: registry-secret
       containers: #description of the contaniners in the pod
         - name: flask-fruit
-          image: flask-fruit
+          image: 192.168.49.70:5000/fruits-project:v1.0
           imagePullPolicy: Always
           ports: 
           - containerPort: 5000
