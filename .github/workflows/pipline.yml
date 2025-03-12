@@ -47,8 +47,7 @@ jobs:
 
       - name: build docker image
         run: |
-          docker buildx create --use
-          docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest . --push
+          docker build -t ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest . --push
 
       - name: Pull PostgreSQL image from Docker Hub and push to private registry
         run: |
@@ -58,8 +57,8 @@ jobs:
 
       - name: push the docker image to ubuntu-on-NAS
         run: |
-          docker push --tls-verify=false ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
-          docker push --tls-verify=false ${{ secrets.DOCKER_REGISTRY }}/postgres:16
+          docker push  ${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
+          docker push  ${{ secrets.DOCKER_REGISTRY }}/postgres:16
 
 
 
