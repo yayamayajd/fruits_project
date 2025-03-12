@@ -23,7 +23,7 @@ spec:
         image: 192.168.49.70:5000/postgres:16
         imagePullPolicy: always
         ports: 
-          - containerPort: 5432
+        - containerPort: 5432
         env: #created in kubernetes secret and user the anv here
         - name: POSTGRES_DB
           valueFrom:
