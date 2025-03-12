@@ -32,11 +32,6 @@ spec:
               secretKeyRef:
                 name: flask-secrets
                 key: DATABASE_URL
-          - name: DOCKER_REGISTRY
-            valueFrom:
-              secretKeyRef:
-                name: docker-registry-config
-                key: DOCKER_REGISTRY
           resources:
             requests:
               cpu: "100m"
