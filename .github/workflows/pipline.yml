@@ -84,13 +84,20 @@ jobs:
             cd /home/${{ secrets.UBUNTU_USER }}/fruit/fruits_project || exit 1
             git pull origin main
             export KUBECONFIG=~/.kube/config
+
             kubectl apply -f kubernetes/postgres-service.yml
             kubectl apply -f kubernetes/postgres-statefulset.yml
+
             kubectl set image statefulset/postgres postgres=${{ secrets.DOCKER_REGISTRY }}/postgres:16
+
+            kubectl rollout restart statefulset/postgres
             kubectl rollout status statefulset/postgres
+
             kubectl apply -f kubernetes/flask-service.yml
             kubectl apply -f kubernetes/flask-deployment.yml
             kubectl set image deployment/flask-app-deployment flask-fruit-container=${{ secrets.DOCKER_REGISTRY }}/fruits-project:latest
+            kubectl rollout restart deployment/flask-app-deployment
+            kubectl rollout status deployment/flask-app-deployment
           EOF
           rm -f ssh_key
 

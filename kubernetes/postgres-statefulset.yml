@@ -14,9 +14,11 @@ spec:
         app: postgres
 
     spec:
+      imagePullSecrets:
+      - name: registry-secret
       containers:
       - name: postgres
-        image: "postgres"
+        image: postgres:latest
         imagePullPolicy: Always
         ports: 
         - containerPort: 5432
