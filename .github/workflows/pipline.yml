@@ -36,6 +36,11 @@ jobs:
       - name: run tests
         run: pytest tests/
 
+      - name: Setup Docker credentials storage
+        run: |
+          mkdir -p ~/.docker
+          echo '{ "credsStore": "none" }' > ~/.docker/config.json
+
 
       - name: login docker registry
         env: #github secrets
@@ -44,8 +49,6 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
           echo $DOCKER_PASSWORD | docker login $DOCKER_REGISTRY -u $DOCKER_USERNAME --password-stdin
-          mkdir -p ~/.docker
-          echo '{ "credsStore": "none" }' > ~/.docker/config.json
 
       - name: build docker image
         run: |
