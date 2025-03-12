@@ -21,7 +21,7 @@ spec:
       containers:
       - name: postgres
         image: postgres
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         ports: 
         - containerPort: 5432
         env: #created in kubernetes secret and user the anv here
