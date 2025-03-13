@@ -186,6 +186,18 @@ In the end, I had to face reality: My dear NAS is already old and should retire.
 I think I’ll take a step back and try switching to K3s instead.
 
 
+**2025.03.12**
+
+After countless rounds of debugging and trial and error, CI/CD finally worked! It finally worked! When I saw all three pods running healthily, I was so happy I almost cried—pure accomplishment filled me up! Now, I can type in the IP address and access my own project.
+
+But… there’s a new issue: I can open the index page, but other pages throw a 500 error. Since the code passed unit tests and the probes check out fine, I’m guessing it’s because there’s no data in the database. I’ll debug it while importing the data. After that, I’ll set up Ingress and give my project a cute custom domain!
+
+I’ll also take some time to document the specific issues I encountered, how I fixed them, and other important details, then upload everything as a tech doc in the repo.
+
+(But first, I need a break. I’ve been debugging until midnight every day, and I just want to get some solid sleep. School has been intense too— studting AWS and Terraform which have been sitting on my to-do list for a while, and I really like them! I also need to renew my Azure cert before the end of the month. This month is seriously packed!)
+
+
+
 
 
 
