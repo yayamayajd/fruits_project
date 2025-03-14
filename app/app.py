@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify, render_template,redirect,url_for
 from app.models import db, Fruit, FruitReview, FruitUser,User,Place,ReviewUser
 from sqlalchemy.exc import IntegrityError
 from config import Config
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__, template_folder="../templates",static_folder="../static")
 
