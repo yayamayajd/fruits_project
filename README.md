@@ -197,6 +197,25 @@ I’ll also take some time to document the specific issues I encountered, how I 
 (But first, I need a break. I’ve been debugging until midnight every day, and I just want to get some solid sleep. School has been intense too— studting AWS and Terraform which have been sitting on my to-do list for a while, and I really like them! I also need to renew my Azure cert before the end of the month. This month is seriously packed!)
 
 
+**2025.03.15**
+
+A Historic Day!
+
+I reached out to an experienced industry professional today for advice on a problem I encountered after successfully deploying CI/CD. Everything except the index page on the frontend was returning a 500 status code. I got a lot of troubleshooting ideas from our discussion.
+
+Since my CI/CD pipeline passed all unit tests in pytest and Kubernetes’ health checks, it meant the code was fine, and Flask was running normally. That meant the issue had to be with the database. Checking the PostgreSQL pod logs, I saw that the database connection was failing due to a password mismatch. But after triple-checking the credentials in my Kubernetes secrets, deleting and updating them again, and even logging into the PostgreSQL container manually—I was able to connect successfully. So, it wasn’t actually a password issue.
+
+Next, I went into the Flask container to check the database URL. That’s when I realized the URL didn’t match what I expected. I had only set the username, password, and database name in Kubernetes secrets, thinking that would be enough to generate the URL automatically (rookie mistake!). I updated my secrets to include the full database URL, reran my CI/CD deployment, and checked again. This time, the URL was correct!
+
+But... the frontend was still throwing 500 errors. Running Python inside the Flask container and manually accessing the /fruits route returned the same error. So, I exited the container and checked the pod logs. The logs showed the real issue—the fruits table didn’t exist in the database.
+
+I immediately connected to the database, created all the necessary tables, and redeployed through CI/CD. Finally, everything worked! The frontend was fully functional, and my v1.0 version was successfully deployed. Not only that, but I now had a reusable CI/CD pipeline in place. The only thing left is importing data and getting the system into real use.
+
+This was my first time completing a full-stack DevOps workflow from start to finish. I’ve learned so much—practical experience that no school course could ever teach. And that moment when everything finally worked after all the debugging, adjusting, that was pure joy and an incredible sense of achievement.
+
+Next, I plan to do a full post-mortem analysis—documenting the entire execution process and troubleshooting steps. It’s going to be a big task. Considering I have exams, a group project at school, and an Azure certification update in the next two weeks, I’ll take it slowly.
+
+
 
 
 
