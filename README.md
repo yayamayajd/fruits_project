@@ -33,6 +33,12 @@ Meanwhile, I want to apply all the skills I’ve learned and take my studies and
 
 ### Dev log: 
 
+**2025.01**
+
+Gathered ideas and made the basic plan: decided on the tech stack, and designed the database structure based on the fruit's Excel file.
+Read and learned the necessary theories according to the plan.
+
+
 **2025.02.02**
 
 DB has built
