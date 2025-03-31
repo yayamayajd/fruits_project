@@ -32,12 +32,10 @@ def client():
             db.session.execute(text('DELETE FROM ways_to_get CASCADE'))
             db.session.execute(text('DELETE FROM places CASCADE'))
 
-            db.session.commit()
+
             db.session.execute(text("ALTER SEQUENCE fruits_id_seq RESTART WITH 1")) #reset the seriel to 1
             db.session.execute(text("ALTER SEQUENCE fruit_reviews_id_seq RESTART WITH 1"))
-            db.session.commit()
 
-            #直接用数据里里的数据测试不会被事务回滚，要使用事务回滚必须自己提供要测试的数据
             fruit1 = Fruit(official_name="Apple", scientific_name="Malus domestica")
             fruit2 = Fruit(official_name="Mango", scientific_name="Mangifera indica")
             user = User(name="alice")
@@ -49,7 +47,7 @@ def client():
             fruit_user1 = FruitUser(fruit_id=fruit1.id, user_id = user.id)
             fruit_user2 = FruitUser(fruit_id=fruit2.id, user_id = user.id)
             db.session.add_all([fruit_user1,fruit_user2])
-            db.session.commit
+
 
 
             review = FruitReview(
@@ -74,7 +72,6 @@ def client():
 
             yield client
             db.session.rollback()
-            transaction.rollback()
             conn.close()
             db.session.remove()
 
