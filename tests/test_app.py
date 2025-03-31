@@ -72,6 +72,7 @@ def client():
 
             yield client
             db.session.rollback()
+            transaction.rollback()
             conn.close()
             db.session.remove()
 
