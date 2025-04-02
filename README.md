@@ -229,6 +229,10 @@ This was my first time completing a full-stack DevOps workflow from start to fin
 Next, I plan to do a full post-mortem analysis—documenting the entire execution process and troubleshooting steps. It’s going to be a big task. Considering I have exams, a group project at school, and an Azure certification update in the next two weeks, I’ll take it slowly.
 
 
+**2025.04.01**
+Started to work with the retro docs. was a bit sick and busy with school project last week, so took a slow step on this side. Checked the test file first (also because the official testing cource have been started this week, so want to have a bit sync effort), went through the thoeritical part include transcation and got the new/better way(tring to use mock to rewrite test and see the diffrence with use the real DB for test). Feels that really is a magical way to make the test process easier! 
+
+
 
 
 
