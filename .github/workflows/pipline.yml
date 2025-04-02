@@ -2,6 +2,9 @@ name: cicd pipline Fruits-Project
 
 on:
   push:
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
     branches:
       - main
 
