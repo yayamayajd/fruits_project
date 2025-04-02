@@ -10,6 +10,13 @@ Meanwhile, I want to apply all the skills I’ve learned and take my studies and
 
 
 
+
+**Architecture Diagram**
+
+
+![System Architecture](docs/images/architecture.png)
+
+
 ### Plan:
 
 
