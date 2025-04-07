@@ -230,7 +230,13 @@ Next, I plan to do a full post-mortem analysis—documenting the entire executio
 
 
 **2025.04.01**
+
 Started to work with the retro docs. was a bit sick and busy with school project last week, so took a slow step on this side. Checked the test file first (also because the official testing cource have been started this week, so want to have a bit sync effort), went through the thoeritical part include transcation and got the new/better way(tring to use mock to rewrite test and see the diffrence with use the real DB for test). Feels that really is a magical way to make the test process easier! 
+
+**2025.04.07**
+
+Went to the pink programmring's event yesterday and got a lot info about how can I build my github profile better! I guess now my profile is looks next level haha! 
+Upload the doc "QLAlchemy Relationship Mapping Guide" about the SQLalchemy which based on my on experience of this project. I asked chatgpt to reform my own note and use the logic "in which order we need to think when we need to design and mapping the tables with SQLachemy", and som important key points when we implement it acording to 3 situations: many to many, one to many, many to one. Hope this note can help who is cofused and stacked in this part also.
 
 
 
