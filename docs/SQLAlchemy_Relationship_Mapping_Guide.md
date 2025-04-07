@@ -3,7 +3,10 @@
 When using SQLAlchemy to create mappings, it’s essential to follow a systematic approach to determine the relationship types between tables and define relationships and associations correctly. This guide summarizes the process from analyzing requirements to implementing relationships, including Many-to-Many, One-to-Many, and Many-to-One relationships, along with their key features and best practices.
 
 # 📋 1. Thought Process for Relationship Mapping
+
 Before creating SQLAlchemy models, consider these three core questions:
+
+
 ✅ Step 1: Identify Relationships Between Tables
 Key Question: Is the relationship Many-to-Many, One-to-Many, or One-to-One?
 How to Identify:
