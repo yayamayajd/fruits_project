@@ -35,7 +35,7 @@ No back_populates needed in the association table, as secondary handles the bidi
 
 Example Code:
 
-## Association Table
+***Association Table***
 ```python
 class FruitUser(db.Model):
     __tablename__ = 'fruits_users'
@@ -68,25 +68,34 @@ class Fruit(db.Model):
 ```
 
 ***Key Features:***
+
 secondary="fruits_users" specifies the association table.
 Both parent tables use db.relationship() with back_populates to establish the bidirectional relationship.
 The FruitUser table does not require db.relationship() because the relationship is defined in the parent tables.
+
 Important Considerations:
+
 Use primary_key=True in the association table to ensure the combination of foreign keys is unique.
 ondelete="CASCADE" ensures that deleting a record in a parent table automatically removes related records in the association table.
 
 
 **🗃️ 2. One-to-Many Relationship**
+
 ***Characteristics:***
+
 The child table (Many-side) uses a Foreign Key to reference the parent table (One-side).
 The parent table uses db.relationship() with a plural name to represent multiple child objects.
 The child table uses db.relationship() with a singular name or _associations suffix to reference its parent object.
+
 ***Implementation Requirements:***
+
 Child Table: Must have a Foreign Key pointing to the Primary Key of the parent table.
 Parent Table: Uses db.relationship() with back_populates to establish the bidirectional relationship.
 
 Example Code:
+
 ***Parent Table: User***
+
 ```python
 class User(db.Model):
     __tablename__ = 'users'
@@ -98,6 +107,7 @@ class User(db.Model):
 ```
 
 ***Child Table: ReviewUser***
+
 ```python
 class ReviewUser(db.Model):
     __tablename__ = 'review_users'
@@ -109,27 +119,35 @@ class ReviewUser(db.Model):
 ```
 
 ***Key Features:***
+
 Parent Table (User) uses db.relationship() with a plural name (reviews) to represent multiple child objects.
 Child Table (ReviewUser) uses db.relationship() with a singular name (associated_user) to reference its parent object.
 back_populates establishes the bidirectional relationship, allowing navigation from both sides.
 cascade="all, delete-orphan" ensures that deleting a User will also delete all associated ReviewUserrecords.
+
 ***Important Considerations:***
+
 Ensure the child table's Foreign Key correctly references the parent table's Primary Key.
 Use ondelete="CASCADE" to automatically remove related child records when the parent is deleted.
 
 
 **🔁 3. Many-to-One Relationship**
+
 ***Characteristics:***
+
 The child table (Many-side) uses a Foreign Key to reference the parent table (One-side).
 The child table uses db.relationship() with a singular name to reference its parent object.
 The parent table can optionally use db.relationship() to access related child objects.
+
 ***Implementation Requirements:***
+
 Child Table: Must have a Foreign Key pointing to the Primary Key of the parent table.
 Parent Table: Can use db.relationship() to access related child objects, but this is not mandatory.
 
 Example Code:
 
 ***Parent Table: Fruit***
+
 ```python
 class Fruit(db.Model):
     __tablename__ = 'fruits'
@@ -138,6 +156,7 @@ class Fruit(db.Model):
 ```
 
 ***Child Table: FruitReview***
+
 ```python
 class FruitReview(db.Model):
     __tablename__ = 'fruit_reviews'
@@ -149,17 +168,21 @@ class FruitReview(db.Model):
 ```
 
 ***Key Features:***
+
 Child Table (FruitReview) uses db.Column(... ForeignKey(...)) to define the Foreign Key.
 db.relationship() in the child table uses a singular name (fruit) to reference its parent object.
 Parent Table (Fruit) uses db.relationship() with a plural name (reviews) to represent multiple child objects.
 backref="reviews" creates a bidirectional relationship, allowing navigation from both sides.
+
 ***Important Considerations:***
+
 Ensure the Foreign Key in the child table correctly references the Primary Key of the parent table.
 Use ondelete="CASCADE" to automatically remove related child records when the parent is deleted.
 The child table uses db.relationship() with a singular name because it references one parent object.
 
 
 **🧠 3. Naming Conventions and Best Practices**
+
 ✅ 1. Parent Table (One-side or Many-side)
 
 Use descriptive plural names because the parent table can have multiple child objects.
