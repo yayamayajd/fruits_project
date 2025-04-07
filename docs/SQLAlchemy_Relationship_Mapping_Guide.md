@@ -28,6 +28,7 @@ Association Table: Typically does not use db.relationship() and only defines For
 # 🧩 2. Relationship Types in Detail
 
 **🔗 1. Many-to-Many Relationship**
+
 ***Characteristics:***
 Requires an Association Table with two Foreign Keys, typically set as a Composite Primary Key.
 Uses secondary="table_name" to establish relationships between parent tables, without needing relationship() in the association table.
@@ -184,7 +185,7 @@ Use ondelete="CASCADE" to automatically remove related child records when the pa
 The child table uses db.relationship() with a singular name because it references one parent object.
 
 
-**🧠 3. Naming Conventions and Best Practices**
+# 🧠 3. Naming Conventions and Best Practices
 
 ✅ 1. Parent Table (One-side or Many-side)
 
@@ -204,7 +205,7 @@ Contains Foreign Keys and Primary Keys only.
 Examples: FruitUser, ReviewUser.
 
 
-**4. Key Differences Between Relationship Types**
+# 4. Key Differences Between Relationship Types
 
 | Relationship Type | Association Table | Foreign Key Location     | `db.relationship()` Usage                          |
 |-------------------|-------------------|---------------------------|----------------------------------------------------|
@@ -216,7 +217,7 @@ Examples: FruitUser, ReviewUser.
 
 
 
-**💡 5. Final Summary: Steps to Define Relationships in SQLAlchemy**
+# 💡 5. Final Summary: Steps to Define Relationships in SQLAlchemy
 
 ***Identify the Relationship Type***
 
