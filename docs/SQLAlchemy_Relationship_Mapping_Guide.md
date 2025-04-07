@@ -1,5 +1,5 @@
 
-# SQLAlchemy Relationship Mapping Guide: From Analysis to Implementation
+SQLAlchemy Relationship Mapping Guide: From Analysis to Implementation
 When using SQLAlchemy to create mappings, it’s essential to follow a systematic approach to determine the relationship types between tables and define relationships and associations correctly. This guide summarizes the process from analyzing requirements to implementing relationships, including Many-to-Many, One-to-Many, and Many-to-One relationships, along with their key features and best practices.
 
 📋 1. Thought Process for Relationship Mapping
@@ -42,7 +42,9 @@ class FruitUser(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"), primary_key=True)
 
 
+
 # Parent Table 1: User
+```python
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -50,9 +52,10 @@ class User(db.Model):
 
     # Many-to-Many Relationship
     fruits_eaten_by_user = db.relationship("Fruit", secondary="fruits_users", back_populates="users")
-
+```
 
 # Parent Table 2: Fruit
+```python
 class Fruit(db.Model):
     __tablename__ = 'fruits'
     id = db.Column(db.Integer, primary_key=True)
@@ -80,8 +83,10 @@ Child Table: Must have a Foreign Key pointing to the Primary Key of the parent t
 Parent Table: Uses db.relationship() with back_populates to establish the bidirectional relationship.
 
 Example Code:
+```
 
 # Parent Table: User
+```python
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -89,9 +94,10 @@ class User(db.Model):
 
     # One-to-Many Relationship: One User can have multiple ReviewUsers
     reviews = db.relationship('ReviewUser', back_populates='associated_user', cascade='all, delete-orphan')
-
+```
 
 # Child Table: ReviewUser
+```python
 class ReviewUser(db.Model):
     __tablename__ = 'review_users'
     id = db.Column(db.Integer, primary_key=True)
@@ -120,15 +126,18 @@ Child Table: Must have a Foreign Key pointing to the Primary Key of the parent t
 Parent Table: Can use db.relationship() to access related child objects, but this is not mandatory.
 
 Example Code:
+```
 
 # Parent Table: Fruit
+```python
 class Fruit(db.Model):
     __tablename__ = 'fruits'
     id = db.Column(db.Integer, primary_key=True)
     official_name = db.Column(db.String(50), nullable=False)
-
+```
 
 # Child Table: FruitReview
+```python
 class FruitReview(db.Model):
     __tablename__ = 'fruit_reviews'
     id = db.Column(db.Integer, primary_key=True)
@@ -183,3 +192,4 @@ ondelete="CASCADE" ensures that deleting a record also removes its references in
 Avoid Common Mistakes
 Ensure that back_populates or backref references the correct attribute names in both tables.
 Many-to-Many relationships should only use secondary in parent tables and do NOT require db.relationship() in the association table.
+```
