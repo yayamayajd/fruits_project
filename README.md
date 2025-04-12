@@ -238,6 +238,43 @@ Started to work with the retro docs. was a bit sick and busy with school project
 Went to the pink programmring's event yesterday and got a lot info about how can I build my github profile better! I guess now my profile is looks next level haha! 
 Upload the doc "QLAlchemy Relationship Mapping Guide" about the SQLalchemy which based on my on experience of this project. I asked chatgpt to reform my own note and use the logic "in which order we need to think when we need to design and mapping the tables with SQLachemy", and som important key points when we implement it acording to 3 situations: many to many, one to many, many to one. Hope this note can help who is cofused and stacked in this part also.
 
+**2025.04.08**
+
+Got the chance to attend the ELISA workshop next month!
+As a beginner in this field, I’m truly grateful to the ELISA community for giving me this opportunity to bring my questions and perspectives to people working deeply in safety and system reliability.
+I’ll admit—I’m also feeling a little nervous.
+
+Between reviewing my recent project and taking a course on software testing, I’ve started to gain a deeper understanding of the culture behind DevOps and DevSecOps.
+I’ve also set up a time to sit down with a few Linux-enthusiast friends to really explore these ideas together.
+
+**2025.04.11**
+
+Today, I went back to my old school to discuss ELISA-related topics with some friends.
+Our conversation ranged from trust mechanisms behind package managers to system-level stability.
+By the end of it, I realized that many of our thoughts around safety actually stemmed from two distinct dimensions: external trust chains and internal intent chains.
+
+Since everyone in the group prefers hands-on learning, I found the discussion incredibly insightful.
+There were a few disagreements, though, which I think reflect broader concerns people have about open source.
+For example, some expressed skepticism about the entire open source model, pointing out that it’s built on assumed trust—something that seems to contradict the principles of zero trust in security.
+One person mentioned the real case where Russian hackers gained community trust and contributed malicious patches.
+At first, that perspective made sense. But I also felt that rejecting open source altogether would mean throwing away too many valuable possibilities.
+
+To me, the world is a complex system, and absolute certainty is rare.
+Most of us aren’t working toward a perfect “0” or “1” outcome—but toward something that comes very close.
+This whole reflection process helped me realize that what I want to build isn't just pipelines that run, but pipelines that hold up—pipelines that are stable and reliable by design.
+
+In my own project, for example, once I started thinking from a security angle, I began noticing how each interaction between systems introduced new risk.
+Even in a happy-path scenario, pipelines can contain hidden vulnerabilities simply because of how many systems are involved.
+Unlike isolated scripts, CI/CD pipelines span multiple steps and environments—so if they’re only designed for the ideal case, they’re inherently fragile.
+
+That’s why I’m looking forward to the ELISA workshop next month. I hope it will give me more tools and direction.
+
+I also talked to some local DevOps engineers.
+Compared to pure tech companies, many of them work in hybrid, more complex environments.
+That makes pipeline robustness, traceability, and safety even more important than in a clean cloud-only setup.
+
+These conversations were eye-opening.
+Suddenly, the amount I need to learn feels exponential—but so does my sense of clarity and confidence about this career path.
 
 
 
