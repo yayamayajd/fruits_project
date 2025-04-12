@@ -28,3 +28,33 @@ During my retrospectives, I realized that I could have used mocking to simplify 
 ### 🧩 Other Issues
 Due to the cluttered project root directory, I moved app.py and model.py into a new app/ folder. However, this caused the app to fail to locate the correct entry point. After adjusting the setup, I was able to run the application successfully using app.app as the entry point.
 
+
+## 🔍 Problems Caused by Not Using a RESTful Design — and How Hard It Was to Troubleshoot
+
+When I designed the fruit management system, my goal was to build it using the tech stack I had already learned, while also preparing for DevOps-related tools I would use later. To keep the system minimal, I chose Flask as the framework, used Python for the backend, and Jinja templates to render the frontend.
+
+At first, everything seemed fine. The pages loaded correctly, and the backend interacted with the database as expected. But the real issue emerged during testing.
+
+I wrote tests for each backend function and used assertions to check the returned status codes. At the time, I thought I was writing unit tests — but later, as I learned more about testing, I realized that I was actually performing integration tests, since the frontend and backend were tightly coupled.
+
+After a long cycle of revisions and repeated test runs, all results came back green. This suggested that there were no logic errors.
+But when I manually checked the application, something odd happened: one test was supposed to delete a comment related to a fruit. The test passed, but the comment was still there — and worse, a different fruit next to it in the list had disappeared.
+
+I was completely confused.
+
+I reviewed the test code again but couldn’t spot anything wrong. Then I went back to the backend logic — still nothing wrong there.
+Could it be a database relationship issue? I reviewed the relationship tables and manually tested them again and again. I initially suspected the issue was with the use of backref, so I switched to back_populates, but no matter how I modified the relationships, the problem persisted: deleting a comment caused the wrong fruit to disappear.
+
+This issue blocked me for quite some time. I simply couldn’t find the root cause.
+
+Then, I had a sudden insight — what if the issue was in the frontend?
+Because the project wasn’t built on a separated frontend-backend architecture, the HTML templates actually participated in backend logic.
+
+Following this new direction, I finally located the bug:
+In the fruit detail page template, I had several <form> elements connected to different backend functions.
+But due to a naming mistake in the HTML, two forms ended up using the same function name or endpoint by accident.
+As a result, when the test code triggered the action to delete a comment, it actually called the wrong route, and deleted a completely unrelated fruit instead.
+
+This debugging process taught me something I’ll never forget:
+Not separating the frontend from the backend adds massive complexity to both testing and troubleshooting.
+From that moment, I made a clear decision: in version 2.0, the frontend and backend will be fully decoupled.
