@@ -35,7 +35,18 @@ Meanwhile, I want to apply all the skills I’ve learned and take my studies and
 *Others*: Docker
 
 
+### Interim results & reflections
 
+![cicd_succeed](docs/images/Screenshot_cicd_succeed.png)
+
+
+![pods_running](docs/images/Screenshot_pods_running.png)
+
+
+![app_working](docs/images/Screenshot_app_run_successful.png)
+
+
+**Dev logs below, and the Review and Reflection Document's you can find in /Docs**
 
 
 ### Dev log: 
