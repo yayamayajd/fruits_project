@@ -288,6 +288,14 @@ These conversations were eye-opening.
 Suddenly, the amount I need to learn feels exponential—but so does my sense of clarity and confidence about this career path.
 
 
+**2025.04.22**
+
+tasklist recently:
+1.The project involves a local network setup and some private env secrets, so it’s kinda hard to just clone and run out of the box.
+I’m planning to build a quick-start version that uses GitHub Actions’ public runner, just to showcase the CI part separately with a test env.
+2.Starting to set up a super lightweight monitoring tool.
+The idea is to run a tiny Prometheus pod and push the metrics to some cloud service (Grafana Cloud or similar).
+Still figuring out how to make it work with my limited resources... so this might take some (long)trial, (many)error, and Googling 😅
 
 
 
