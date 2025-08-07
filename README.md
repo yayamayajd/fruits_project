@@ -51,6 +51,23 @@ Meanwhile, I want to apply all the skills I’ve learned and take my studies and
 
 ### Dev log: 
 
+
+#### ____version 2.0 ####
+
+**2025.08.06**
+
+after back from summer trip, I planed that go for the 2.0 which is add the fruits' image featrue to the application. 
+but sadly, the poor old NAS could not hold the task anymore. The VM crashed. I tried to fix it, but the longer-than-10-min-reboot-process killed me.
+So, I made a decision: to buy a new server, build a whole new homelad for all the future use and my projects!
+I got the new server today. before I got it, I already did many reserch about homelab, eventually I decide to build a k3s cluster to connect all my avaliable device.
+So the fruits project will be developed after the homelab worked, and to be iterated with new feature, and the CI/CD pipline will be re structured. (I plan to splite the tool chain, only run CI on Github Actions, and hands off CD to ArgoCD). My RaspberryPi will take the charge for monitering's job. Now I have enought resources! Exciting!   
+
+
+
+
+
+#### ____version 1.0 ####
+
 **2025.01**
 
 Gathered ideas and made the basic plan: decided on the tech stack, and designed the database structure based on the fruit's Excel file.
