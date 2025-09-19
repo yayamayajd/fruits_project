@@ -54,6 +54,25 @@ Meanwhile, I want to apply all the skills I’ve learned and take my studies and
 
 #### ____version 2.0 ####
 
+
+**2025.09.18**
+
+After setting up the necessary homelab infrastructure, I continued experimenting with new features, learning Kubernetes, and also returned to the Fruit Project 2.0.
+
+I need to add image display on the fruit detail page. The current plan is to create a separate fruit image table in the database, where each record stores the image URL. But I ran into a problem: in version 1.0 of this project, which was running on a single-node K3s VM, the database PV was mounted directly onto the VM.
+
+In version 2.0, however, there will be images and more data, so I want to decouple the storage solution. My current plan is to upload the image via the frontend and store the URL in the database, but have the actual image stored on the NAS and read via NFS. The database itself will still persist using a PV on the mini PC’s local disk. This setup involves coordination between the NAS, the mini PC’s local storage, and Kubernetes. Logically, I think the design is fine, but I’ll need to pay special attention to permissions during deployment (something I’ll need to continue testing in practice).
+
+Since I added routes for adding and deleting images, I’ll also need to update the tests.
+
+The pipeline also needs to be rebuilt. Previously, to save resources on the old NAS, I built the images on my Mac, with the runner also running there. That meant the default builds were ARM architecture images, and I had to spend a lot of time solving multi-architecture issues. This time, I plan to move both the runner and image builds to the mini PC, which will reduce network complexity. However, before building a new pipeline, I’ll manually deploy everything first to ensure the logic is sound, and only then proceed with automation.
+
+I can clearly feel that when facing a full development-to-deployment chain, compared to version 1.0, I now have a much clearer understanding of the overall framework and process. I’ve especially learned a lot about mindset and implementation approaches. My sense of helplessness and confusion when dealing with Kubernetes and errors has been reduced significantly, and I’ve improved a lot in troubleshooting. I feel genuinely happy about my own progress.
+
+
+
+
+
 **2025.08.06**
 
 after back from summer trip, I planed that go for the 2.0 which is add the fruits' image featrue to the application. 
